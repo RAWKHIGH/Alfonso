@@ -13,15 +13,24 @@ screen = pygame.display.set_mode((1024, 672))
 class Alfonso(pygame.sprite.Sprite):
 	def __init__(self):
 		pygame.sprite.Sprite.__init__(self)
-		self.image = pygame.image.load("alfonso.png")
+		self.image = pygame.image.load("alfonso_pause.png")
 		self.image.set_colorkey(white)
 		self.image = self.image.convert()
 		self.rect = self.image.get_rect()
-		
+
+		self.jump = False
+		self.fall = False
+		self.dy = 200
 		
 	def update(self):
-		self.rect.center = (450, 525)
+		self.rect.center = (450, 100)
+		
+		if self.jump == True:
+			self.rect.centery -= self.dy
 
+		if self.fall == True:
+			self.rect.centery += self.dy
+			
 class World1A(pygame.sprite.Sprite):
 	def __init__(self):
 		pygame.sprite.Sprite.__init__(self)
@@ -33,7 +42,6 @@ class World1A(pygame.sprite.Sprite):
 
 #	def update(self):
 		
-	
 	def moveRight(self):
 		self.rect.left -= self.dx
 
@@ -64,7 +72,26 @@ class World1B(pygame.sprite.Sprite):
 	def reset(self):
 		self.rect.left = 1024
 		self.rect.bottom = screen.get_height()
-	
+
+class FloorW1A(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("world1(1)_1stFloor.png")
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+		
+	def reset(self):
+		self.rect.bottom = screen.get_height()
+
+		
 def main():
 		screen = pygame.display.set_mode((1024, 672))
 		pygame.display.set_caption("Super Mario Bros. Cousin Alfonso")
@@ -76,8 +103,12 @@ def main():
 		player = Alfonso()
 		level1A = World1A()
 		level1B = World1B()
+		floorw1A = FloorW1A()
 	
-		allSprites = pygame.sprite.OrderedUpdates(level1B, level1A, player)
+		backgroundSprites = pygame.sprite.OrderedUpdates(level1B, level1A)
+		floorSprites = pygame.sprite.OrderedUpdates(floorw1A)
+		playerSprites = pygame.sprite.OrderedUpdates(player)
+		
 		clock = pygame.time.Clock()
 		keepGoing = True
 		while keepGoing:
@@ -87,25 +118,40 @@ def main():
 			for event in pygame.event.get():
 				if event.type == pygame.QUIT:
 					keepGoing = False
+				elif event.type == pygame.KEYDOWN:
+					if event.key == pygame.K_SPACE:
+						print ("Jumping!!!")
+						player.jump = True
 				
 			
 			if key[pygame.K_LEFT]:
-				if level1A.rect.left != 0:
+				if not level1A.rect.left == 0:
 					level1A.moveLeft()
+					floorw1A.moveLeft()
 					if level1A.rect.right <= 1024:
 						level1B.moveLeft()
 			
 			if key[pygame.K_RIGHT]:
 				if level1B.rect.right > 1024:
 					level1A.moveRight()
+					floorw1A.moveRight()
 					if level1A.rect.right <= 1024:
 						level1B.moveRight()
 
-						
+			if not pygame.sprite.spritecollideany(player, floorSprites):
+				player.fall = True
+					
+					
+					
+			playerSprites.update()
+			backgroundSprites.update()
+			floorSprites.update()
 
-			allSprites.update()
-			allSprites.draw(screen)
-
+			
+			backgroundSprites.draw(screen)
+			floorSprites.draw(screen)
+			playerSprites.draw(screen)
+			
 			pygame.display.flip()
 		
 		pygame.mouse.set_visible(True)
