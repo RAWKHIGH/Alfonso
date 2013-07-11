@@ -20,7 +20,7 @@ class Alfonso(pygame.sprite.Sprite):
 		
 		
 	def update(self):
-		self.rect.center = (100, 525)
+		self.rect.center = (450, 525)
 
 class World1A(pygame.sprite.Sprite):
 	def __init__(self):
@@ -31,9 +31,8 @@ class World1A(pygame.sprite.Sprite):
 		self.dx = 10
 		self.reset()
 
-	def update(self):
-		if self.rect.top >= 0:
-			self.reset() 
+#	def update(self):
+		
 	
 	def moveRight(self):
 		self.rect.left -= self.dx
@@ -42,6 +41,28 @@ class World1A(pygame.sprite.Sprite):
 		self.rect.left += self.dx
 		
 	def reset(self):
+		self.rect.bottom = screen.get_height()
+	
+class World1B(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("world1(2).png")
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+#	def update(self):
+
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+		
+	def reset(self):
+		self.rect.left = 1024
 		self.rect.bottom = screen.get_height()
 	
 def main():
@@ -54,8 +75,9 @@ def main():
 
 		player = Alfonso()
 		level1A = World1A()
+		level1B = World1B()
 	
-		allSprites = pygame.sprite.OrderedUpdates(level1A, player)
+		allSprites = pygame.sprite.OrderedUpdates(level1B, level1A, player)
 		clock = pygame.time.Clock()
 		keepGoing = True
 		while keepGoing:
@@ -65,21 +87,27 @@ def main():
 			for event in pygame.event.get():
 				if event.type == pygame.QUIT:
 					keepGoing = False
-					
-					
-					
+				
+			
 			if key[pygame.K_LEFT]:
-						level1A.moveLeft()
+				if level1A.rect.left != 0:
+					level1A.moveLeft()
+					if level1A.rect.right <= 1024:
+						level1B.moveLeft()
+			
 			if key[pygame.K_RIGHT]:
-						level1A.moveRight()
+				if level1B.rect.right > 1024:
+					level1A.moveRight()
+					if level1A.rect.right <= 1024:
+						level1B.moveRight()
 
-			#allSprites.clear(screen, background)
+						
+
 			allSprites.update()
 			allSprites.draw(screen)
 
 			pygame.display.flip()
 		
-		#return mouse cursor
 		pygame.mouse.set_visible(True)
 		
 if __name__ == "__main__":
