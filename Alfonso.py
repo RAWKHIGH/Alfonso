@@ -17,19 +17,14 @@ class Alfonso(pygame.sprite.Sprite):
 		self.image.set_colorkey(white)
 		self.image = self.image.convert()
 		self.rect = self.image.get_rect()
-
-		self.jump = False
-		self.fall = False
-		self.dy = 200
-		
+	
 	def update(self):
-		self.rect.center = (450, 100)
+		self.rect.centerx = 450
 		
-		if self.jump == True:
-			self.rect.centery -= self.dy
+	def jump(self):
+		jump = 35
+		self.rect.centery -= jump
 
-		if self.fall == True:
-			self.rect.centery += self.dy
 			
 class World1A(pygame.sprite.Sprite):
 	def __init__(self):
@@ -118,10 +113,6 @@ def main():
 			for event in pygame.event.get():
 				if event.type == pygame.QUIT:
 					keepGoing = False
-				elif event.type == pygame.KEYDOWN:
-					if event.key == pygame.K_SPACE:
-						print ("Jumping!!!")
-						player.jump = True
 				
 			
 			if key[pygame.K_LEFT]:
@@ -137,9 +128,14 @@ def main():
 					floorw1A.moveRight()
 					if level1A.rect.right <= 1024:
 						level1B.moveRight()
-
+						
+			if key[pygame.K_SPACE]:
+				player.jump()
+				
+				
 			if not pygame.sprite.spritecollideany(player, floorSprites):
-				player.fall = True
+				fall = 15
+				player.rect.centery += fall
 					
 					
 					
