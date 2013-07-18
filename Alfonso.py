@@ -9,19 +9,57 @@ green    = (  0,255,  0)
 red      = (255,  0,  0)
 
 screen = pygame.display.set_mode((1024, 672))
-
 class Alfonso(pygame.sprite.Sprite):
+
+	'''
 	def __init__(self):
 		pygame.sprite.Sprite.__init__(self)
-		self.image = pygame.image.load("alfonso_pause.png")
+		self.image = pygame.image.load("walk R000.png")
+		self.image = self.image.convert()
+		tranColor = self.image.get_at((1, 1))
+		self.image.set_colorkey(tranColor)
+		self.rect = self.image.get_rect()
+		self.rect.center = (320, 240)
+
+		self.imgList = []
+		self.loadPics()
+
+
+	def loadPics(self):
+		fileBase = [
+			"walk R00",
+			"walk L00"
+		]
+ 
+		for dir in range(2):
+			tempList = []
+			tempFile = fileBase[dir]
+			for frame in range(2):
+				imgName = "{0}{1}.png".format(tempFile, frame)
+				tmpImg = pygame.image.load(imgName)
+				tmpImg.convert()
+				tranColor = tmpImg.get_at((0, 0))
+				tmpImg.set_colorkey(tranColor)
+				tempList.append(tmpImg)
+			self.imgList.append(tempList)
+	'''
+
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("walk R000.png")
 		self.image.set_colorkey(white)
 		self.image = self.image.convert()
 		self.rect = self.image.get_rect()
+		self.turn = 1
 	
 	def update(self):
 		self.rect.centerx = 450
 		
 	def jump(self):
+		if self.turn == 0:
+			self.image = pygame.image.load("jump L000.png")
+		elif self.turn == 1:
+			self.image = pygame.image.load("jump R000.png")
 		jump = 35
 		self.rect.centery -= jump
 
@@ -280,7 +318,7 @@ class PipeW1F(pygame.sprite.Sprite):
 	def reset(self):
 		self.rect.top = 449
 		self.rect.left = 5827
-		
+				
 class QboxW1A(pygame.sprite.Sprite):
 	def __init__(self):
 		pygame.sprite.Sprite.__init__(self)
@@ -1142,6 +1180,266 @@ class BlockW1AD(pygame.sprite.Sprite):
 		self.rect.top = 320
 		self.rect.left = 5314
 		
+class StarW1A(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("star.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+		
+	def reset(self):
+		self.rect.top = 270
+		self.rect.left = 1040
+		
+class StarW1B(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("star.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+		
+	def reset(self):
+		self.rect.top = 270
+		self.rect.left = 1359
+		
+class StarW1C(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("star.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+		
+	def reset(self):
+		self.rect.top = 270
+		self.rect.left = 1488
+		
+class StarW1D(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("star.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+		
+	def reset(self):
+		self.rect.top = 13
+		self.rect.left = 1423
+		
+class StarW1E(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("star.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+		
+	def reset(self):
+		self.rect.top = 270
+		self.rect.left = 5008
+		
+class StarW1F(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("star.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+		
+	def reset(self):
+		self.rect.top = 13
+		self.rect.left = 6033
+		
+class StarW1G(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("star.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+		
+	def reset(self):
+		self.rect.top = 270
+		self.rect.left = 1170
+		
+class StarW1H(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("star.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+		
+	def reset(self):
+		self.rect.top = 270
+		self.rect.left = 1362
+		
+class StarW1I(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("star.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+		
+	def reset(self):
+		self.rect.top = 270
+		self.rect.left = 1554
+		
+class StarW1J(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("star.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+		
+	def reset(self):
+		self.rect.top = 13
+		self.rect.left = 1362
+		
+class StarW1K(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("star.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+		
+	def reset(self):
+		self.rect.top = 13
+		self.rect.left = 2643
+		
+class StarW1L(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("star.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+		
+	def reset(self):
+		self.rect.top = 13
+		self.rect.left = 2707
+		
+class StarW1M(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("star.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+		
+	def reset(self):
+		self.rect.top = 270
+		self.rect.left = 5267
+		
 def main():
 		screen = pygame.display.set_mode((1024, 672))
 		pygame.display.set_caption("Super Mario Bros. Cousin Alfonso")
@@ -1207,12 +1505,26 @@ def main():
 		blockw1AB = BlockW1AB()
 		blockw1AC = BlockW1AC()
 		blockw1AD = BlockW1AD()
+		starW1A = StarW1A()
+		starW1B = StarW1B()
+		starW1C = StarW1C()
+		starW1D = StarW1D()
+		starW1E = StarW1E()
+		starW1F = StarW1F()
+		starW1G = StarW1G()
+		starW1H = StarW1H()
+		starW1I = StarW1I()
+		starW1J = StarW1J()
+		starW1K = StarW1K()
+		starW1L = StarW1L()
+		starW1M = StarW1M()
 	
 		backgroundSprites = pygame.sprite.OrderedUpdates(level1B, level1A)
 		floorSprites = pygame.sprite.OrderedUpdates(floorw1A, floorw1B, floorw1C, floorw1D, floorw1E)
 		pipeSprites = pygame.sprite.OrderedUpdates(pipew1A, pipew1B, pipew1C, pipew1D, pipew1E, pipew1F)
 		QboxSprites = pygame.sprite.OrderedUpdates(qboxw1A, qboxw1B, qboxw1C, qboxw1D, qboxw1E, qboxw1F, qboxw1G, qboxw1H, qboxw1I, qboxw1J, qboxw1K, qboxw1L, qboxw1M)
 		blockSprites = pygame.sprite.OrderedUpdates(blockw1A, blockw1B, blockw1C, blockw1D, blockw1E, blockw1F, blockw1G, blockw1H, blockw1I, blockw1J, blockw1K, blockw1L, blockw1M, blockw1N, blockw1O, blockw1P, blockw1Q, blockw1R, blockw1S, blockw1T, blockw1U, blockw1V, blockw1W, blockw1X, blockw1Y, blockw1Z, blockw1AA, blockw1AB, blockw1AC, blockw1AD)
+		starSprites = pygame.sprite.OrderedUpdates(starW1A, starW1B, starW1C, starW1D, starW1E, starW1F, starW1G, starW1H, starW1I, starW1J, starW1K, starW1L, starW1M)
 		playerSprites = pygame.sprite.OrderedUpdates(player)
 		
 		clock = pygame.time.Clock()
@@ -1227,6 +1539,8 @@ def main():
 			
 			
 			if key[pygame.K_LEFT]:
+				player.turn = 0
+				player.image = pygame.image.load("walk L000.png")
 				if not level1A.rect.left == 0:
 					level1A.moveLeft()
 					floorw1A.moveLeft()
@@ -1261,6 +1575,12 @@ def main():
 					blockw1Q.moveLeft()
 					blockw1R.moveLeft()
 					blockw1S.moveLeft()
+					starW1A.moveLeft()
+					starW1B.moveLeft()
+					starW1C.moveLeft()
+					starW1D.moveLeft()
+					starW1E.moveLeft()
+					starW1F.moveLeft()
 					if level1A.rect.right <= 1024:
 						level1B.moveLeft()
 						floorw1D.moveLeft()
@@ -1285,8 +1605,17 @@ def main():
 						blockw1AB.moveLeft()
 						blockw1AC.moveLeft()
 						blockw1AD.moveLeft()
+						starW1G.moveLeft()
+						starW1H.moveLeft()
+						starW1I.moveLeft()
+						starW1J.moveLeft()
+						starW1K.moveLeft()
+						starW1L.moveLeft()
+						starW1M.moveLeft()
 
 			if key[pygame.K_RIGHT]:
+				player.turn = 1
+				player.image = pygame.image.load("walk R000.png")
 				if level1B.rect.right > 1024:
 					level1A.moveRight()
 					floorw1A.moveRight()
@@ -1321,6 +1650,12 @@ def main():
 					blockw1Q.moveRight()
 					blockw1R.moveRight()
 					blockw1S.moveRight()
+					starW1A.moveRight()
+					starW1B.moveRight()
+					starW1C.moveRight()
+					starW1D.moveRight()
+					starW1E.moveRight()
+					starW1F.moveRight()
 					if level1A.rect.right <= 1024:
 						level1B.moveRight()
 						floorw1D.moveRight()
@@ -1345,6 +1680,13 @@ def main():
 						blockw1AB.moveRight()
 						blockw1AC.moveRight()
 						blockw1AD.moveRight()
+						starW1G.moveRight()
+						starW1H.moveRight()
+						starW1I.moveRight()
+						starW1J.moveRight()
+						starW1K.moveRight()
+						starW1L.moveRight()
+						starW1M.moveRight()
 
 			if key[pygame.K_SPACE]:
 				player.jump()
@@ -1363,11 +1705,13 @@ def main():
 			pipeSprites.update()
 			QboxSprites.update()
 			blockSprites.update()
+			starSprites.update()
 
 			backgroundSprites.draw(screen)
 			pipeSprites.draw(screen)
 			QboxSprites.draw(screen)
 			blockSprites.draw(screen)
+			starSprites.draw(screen)
 			floorSprites.draw(screen)
 			playerSprites.draw(screen)
 			
