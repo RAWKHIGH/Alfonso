@@ -51,18 +51,22 @@ class Alfonso(pygame.sprite.Sprite):
 		self.image = self.image.convert()
 		self.rect = self.image.get_rect()
 		self.turn = 1
+		self.currentJump = 0
 	
 	def update(self):
 		self.rect.centerx = 450
 		
 	def jump(self):
-		if self.turn == 0:
-			self.image = pygame.image.load("jump L000.png")
-		elif self.turn == 1:
-			self.image = pygame.image.load("jump R000.png")
-		jump = 35
-		self.rect.centery -= jump
-
+		if (self.currentJump - 300) < self.rect.centery:
+			jump = 35
+			print (self.currentJump)
+			print (self.rect.centery)
+			if self.turn == 0:
+				self.image = pygame.image.load("jump L000.png")
+			elif self.turn == 1:
+				self.image = pygame.image.load("jump R000.png")
+			self.rect.centery -= jump
+			
 			
 class World1A(pygame.sprite.Sprite):
 	def __init__(self):
@@ -1440,6 +1444,7 @@ class StarW1M(pygame.sprite.Sprite):
 		self.rect.top = 270
 		self.rect.left = 5267
 		
+		
 def main():
 		screen = pygame.display.set_mode((1024, 672))
 		pygame.display.set_caption("Super Mario Bros. Cousin Alfonso")
@@ -1447,6 +1452,8 @@ def main():
 		background = pygame.Surface(screen.get_size())
 		background.fill((0, 0, 0))
 		screen.blit(background, (0, 0))
+		
+		score = 0
 
 		player = Alfonso()
 		level1A = World1A()
@@ -1536,7 +1543,9 @@ def main():
 			for event in pygame.event.get():
 				if event.type == pygame.QUIT:
 					keepGoing = False
-			
+				elif event.type == pygame.KEYDOWN:
+					if event.key == pygame.K_SPACE:
+						player.currentJump = player.rect.centery
 			
 			if key[pygame.K_LEFT]:
 				player.turn = 0
@@ -1690,8 +1699,12 @@ def main():
 
 			if key[pygame.K_SPACE]:
 				player.jump()
-				
-				
+			
+			star = pygame.sprite.spritecollide(player, starSprites, True)
+			if star:
+				score += 100
+				print (score)
+			
 			if not pygame.sprite.spritecollideany(player, floorSprites):
 				if not pygame.sprite.spritecollideany(player, QboxSprites):
 					if not pygame.sprite.spritecollideany(player, blockSprites):
