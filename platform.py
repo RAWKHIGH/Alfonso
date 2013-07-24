@@ -1,3 +1,6 @@
+# Name: Stephen McArthur
+# Purpose: Final Project. Create game with 3 levels (Easy, Medium, Hard) and a Boss level
+# GitHub: 
 
 import pygame
 from pygame.locals import *
@@ -16,6 +19,7 @@ man = pygame.image.load('walk R000.png').convert_alpha()
 background = pygame.image.load('world1(1).png')
 background2 = pygame.image.load('world1(2).png')
 groundA = pygame.image.load('world1(1)groundA.png')
+groundB = pygame.image.load('world1(1)groundA.png')
 pipeA = pygame.image.load('small_pipe.png')
 pipeB = pygame.image.load('large_pipe.png')
 pipeC = pygame.image.load('large_pipe.png')
@@ -28,6 +32,44 @@ QboxC = pygame.image.load('Q_box.png')
 QboxD = pygame.image.load('Q_box.png')
 QboxE = pygame.image.load('Q_box.png')
 QboxF = pygame.image.load('Q_box.png')
+QboxG = pygame.image.load('Q_box.png')
+QboxH = pygame.image.load('Q_box.png')
+QboxI = pygame.image.load('Q_box.png')
+QboxJ = pygame.image.load('Q_box.png')
+QboxK = pygame.image.load('Q_box.png')
+QboxL = pygame.image.load('Q_box.png')
+QboxM = pygame.image.load('Q_box.png')
+blockA = pygame.image.load('block.png')
+blockB = pygame.image.load('block.png')
+blockC = pygame.image.load('block.png')
+blockD = pygame.image.load('block.png')
+blockE = pygame.image.load('block.png')
+blockF = pygame.image.load('block.png')
+blockG = pygame.image.load('block.png')
+blockH = pygame.image.load('block.png')
+blockI = pygame.image.load('block.png')
+blockJ = pygame.image.load('block.png')
+blockK = pygame.image.load('block.png')
+blockL = pygame.image.load('block.png')
+blockM = pygame.image.load('block.png')
+blockN = pygame.image.load('block.png')
+blockO = pygame.image.load('block.png')
+blockP = pygame.image.load('block.png')
+blockQ = pygame.image.load('block.png')
+blockR = pygame.image.load('block.png')
+blockS = pygame.image.load('block.png')
+blockT = pygame.image.load('block.png')
+blockU = pygame.image.load('block.png')
+blockV = pygame.image.load('block.png')
+blockW = pygame.image.load('block.png')
+blockX = pygame.image.load('block.png')
+blockY = pygame.image.load('block.png')
+blockZ = pygame.image.load('block.png')
+blockAA = pygame.image.load('block.png')
+blockAB = pygame.image.load('block.png')
+blockAC = pygame.image.load('block.png')
+blockAD = pygame.image.load('block.png')
+
 
 def floorY():
 	return screen.get_height() - man.get_height() - MAN_SCREEN_MARGIN
@@ -46,6 +88,8 @@ background2X = 1028
 background2Y = -223
 groundAX = 0 
 groundAY = 577
+groundBX = 1028 
+groundBY = 577
 pipeAX = 1791
 pipeAY = 449
 pipeBX = 2431
@@ -70,6 +114,80 @@ QboxEX = 4991
 QboxEY = 320
 QboxFX = 6016
 QboxFY = 63
+QboxGX = 1153
+QboxGY = 320
+QboxHX = 1345
+QboxHY = 320
+QboxIX = 1537
+QboxIY = 320
+QboxJX = 1345
+QboxJY = 63
+QboxKX = 2626
+QboxKY = 63
+QboxLX = 2690
+QboxLY = 63
+QboxMX = 5250
+QboxMY = 320
+blockAX = 1278
+blockAY = 320
+blockBX = 1406
+blockBY = 320
+blockCX = 1534
+blockCY = 320
+blockDX = 4927
+blockDY = 320
+blockEX = 5056
+blockEY = 320
+blockFX = 5120
+blockFY = 63
+blockGX = 5184
+blockGY = 63
+blockHX = 5248
+blockHY = 63
+blockIX = 5312
+blockIY = 63
+blockJX = 5376
+blockJY = 63
+blockKX = 5440
+blockKY = 63
+blockLX = 5504
+blockLY = 63
+blockMX = 5568
+blockMY = 320
+blockNX = 5824
+blockNY = 63
+blockOX = 5888
+blockOY = 63
+blockPX = 5952
+blockPY = 63
+blockQX = 6016
+blockQY = 320
+blockRX = 6400
+blockRY = 320
+blockSX = 6464
+blockSY = 320
+blockTX = 1922
+blockTY = 320
+blockUX = 2113
+blockUY = 63
+blockVX = 2177
+blockVY = 63
+blockWX = 2241
+blockWY = 63
+blockXX = 2562
+blockXY = 63
+blockYX = 2753
+blockYY = 63
+blockZX = 2626
+blockZY = 320
+blockAAX = 2690
+blockAAY = 320
+blockABX = 5121
+blockABY = 320
+blockACX = 5185
+blockACY = 320
+blockADX = 5314
+blockADY = 320
 
 loop = True
 while loop:
@@ -105,10 +223,48 @@ while loop:
 				QboxDX -= horzMoveAmt()
 				QboxEX -= horzMoveAmt()
 				QboxFX -= horzMoveAmt()
+				blockAX -= horzMoveAmt()
+				blockBX -= horzMoveAmt()
+				blockCX -= horzMoveAmt()
+				blockDX -= horzMoveAmt()
+				blockEX -= horzMoveAmt()
+				blockFX -= horzMoveAmt()
+				blockGX -= horzMoveAmt()
+				blockHX -= horzMoveAmt()
+				blockIX -= horzMoveAmt()
+				blockJX -= horzMoveAmt()
+				blockKX -= horzMoveAmt()
+				blockLX -= horzMoveAmt()
+				blockMX -= horzMoveAmt()
+				blockNX -= horzMoveAmt()
+				blockOX -= horzMoveAmt()
+				blockPX -= horzMoveAmt()
+				blockQX -= horzMoveAmt()
+				blockRX -= horzMoveAmt()
+				blockSX -= horzMoveAmt()
 				if backgroundX <= -5630:
 					background2X -= horzMoveAmt()
+					groundBX -= horzMoveAmt()
 					pipeEX -= horzMoveAmt()
 					pipeFX -= horzMoveAmt()
+					QboxGX -= horzMoveAmt()
+					QboxHX -= horzMoveAmt()
+					QboxIX -= horzMoveAmt()
+					QboxJX -= horzMoveAmt()
+					QboxKX -= horzMoveAmt()
+					QboxLX -= horzMoveAmt()
+					QboxMX -= horzMoveAmt()
+					blockTX -= horzMoveAmt()
+					blockUX -= horzMoveAmt()
+					blockVX -= horzMoveAmt()
+					blockWX -= horzMoveAmt()
+					blockXX -= horzMoveAmt()
+					blockYX -= horzMoveAmt()
+					blockZX -= horzMoveAmt()
+					blockAAX -= horzMoveAmt()
+					blockABX -= horzMoveAmt()
+					blockACX -= horzMoveAmt()
+					blockADX -= horzMoveAmt()
 						
 		if keys[pygame.K_LEFT]:
 			if backgroundX < 0:
@@ -124,10 +280,48 @@ while loop:
 				QboxDX -= horzMoveAmt()
 				QboxEX -= horzMoveAmt()
 				QboxFX -= horzMoveAmt()
+				blockAX -= horzMoveAmt()
+				blockBX -= horzMoveAmt()
+				blockCX -= horzMoveAmt()
+				blockDX -= horzMoveAmt()
+				blockEX -= horzMoveAmt()
+				blockFX -= horzMoveAmt()
+				blockGX -= horzMoveAmt()
+				blockHX -= horzMoveAmt()
+				blockIX -= horzMoveAmt()
+				blockJX -= horzMoveAmt()
+				blockKX -= horzMoveAmt()
+				blockLX -= horzMoveAmt()
+				blockMX -= horzMoveAmt()
+				blockNX -= horzMoveAmt()
+				blockOX -= horzMoveAmt()
+				blockPX -= horzMoveAmt()
+				blockQX -= horzMoveAmt()
+				blockRX -= horzMoveAmt()
+				blockSX -= horzMoveAmt()
 				if backgroundX <= -5630:
 					background2X -= horzMoveAmt()
+					groundBX -= horzMoveAmt()
 					pipeEX -= horzMoveAmt()
 					pipeFX -= horzMoveAmt()
+					QboxGX -= horzMoveAmt()
+					QboxHX -= horzMoveAmt()
+					QboxIX -= horzMoveAmt()
+					QboxJX -= horzMoveAmt()
+					QboxKX -= horzMoveAmt()
+					QboxLX -= horzMoveAmt()
+					QboxMX -= horzMoveAmt()
+					blockTX -= horzMoveAmt()
+					blockUX -= horzMoveAmt()
+					blockVX -= horzMoveAmt()
+					blockWX -= horzMoveAmt()
+					blockXX -= horzMoveAmt()
+					blockYX -= horzMoveAmt()
+					blockZX -= horzMoveAmt()
+					blockAAX -= horzMoveAmt()
+					blockABX -= horzMoveAmt()
+					blockACX -= horzMoveAmt()
+					blockADX -= horzMoveAmt()
 				
 		
 		if keys[K_SPACE]:
@@ -158,10 +352,48 @@ while loop:
 				QboxDX -= horzMoveAmt()
 				QboxEX -= horzMoveAmt()
 				QboxFX -= horzMoveAmt()
+				blockAX -= horzMoveAmt()
+				blockBX -= horzMoveAmt()
+				blockCX -= horzMoveAmt()
+				blockDX -= horzMoveAmt()
+				blockEX -= horzMoveAmt()
+				blockFX -= horzMoveAmt()
+				blockGX -= horzMoveAmt()
+				blockHX -= horzMoveAmt()
+				blockIX -= horzMoveAmt()
+				blockJX -= horzMoveAmt()
+				blockKX -= horzMoveAmt()
+				blockLX -= horzMoveAmt()
+				blockMX -= horzMoveAmt()
+				blockNX -= horzMoveAmt()
+				blockOX -= horzMoveAmt()
+				blockPX -= horzMoveAmt()
+				blockQX -= horzMoveAmt()
+				blockRX -= horzMoveAmt()
+				blockSX -= horzMoveAmt()
 				if backgroundX <= -5630:
 					background2X -= horzMoveAmt()
+					groundBX -= horzMoveAmt()
 					pipeEX -= horzMoveAmt()
 					pipeFX -= horzMoveAmt()
+					QboxGX -= horzMoveAmt()
+					QboxHX -= horzMoveAmt()
+					QboxIX -= horzMoveAmt()
+					QboxJX -= horzMoveAmt()
+					QboxKX -= horzMoveAmt()
+					QboxLX -= horzMoveAmt()
+					QboxMX -= horzMoveAmt()
+					blockTX -= horzMoveAmt()
+					blockUX -= horzMoveAmt()
+					blockVX -= horzMoveAmt()
+					blockWX -= horzMoveAmt()
+					blockXX -= horzMoveAmt()
+					blockYX -= horzMoveAmt()
+					blockZX -= horzMoveAmt()
+					blockAAX -= horzMoveAmt()
+					blockABX -= horzMoveAmt()
+					blockACX -= horzMoveAmt()
+					blockADX -= horzMoveAmt()
 				
 		
 		if keys[pygame.K_LEFT]:
@@ -178,10 +410,59 @@ while loop:
 				QboxDX -= horzMoveAmt()
 				QboxEX -= horzMoveAmt()
 				QboxFX -= horzMoveAmt()
+				blockAX -= horzMoveAmt()
+				blockBX -= horzMoveAmt()
+				blockCX -= horzMoveAmt()
+				blockDX -= horzMoveAmt()
+				blockEX -= horzMoveAmt()
+				blockFX -= horzMoveAmt()
+				blockGX -= horzMoveAmt()
+				blockHX -= horzMoveAmt()
+				blockIX -= horzMoveAmt()
+				blockJX -= horzMoveAmt()
+				blockKX -= horzMoveAmt()
+				blockLX -= horzMoveAmt()
+				blockMX -= horzMoveAmt()
+				blockNX -= horzMoveAmt()
+				blockOX -= horzMoveAmt()
+				blockPX -= horzMoveAmt()
+				blockQX -= horzMoveAmt()
+				blockRX -= horzMoveAmt()
+				blockSX -= horzMoveAmt()
+				blockTX -= horzMoveAmt()
+				blockUX -= horzMoveAmt()
+				blockVX -= horzMoveAmt()
+				blockWX -= horzMoveAmt()
+				blockXX -= horzMoveAmt()
+				blockYX -= horzMoveAmt()
+				blockZX -= horzMoveAmt()
+				blockAAX -= horzMovAmt()
+				blockABX -= horzMoveAmt()
+				blockACX -= horzMoveAmt()
+				blockADX -= horzMoveAmt()
 				if backgroundX <= -5630:
 					background2X -= horzMoveAmt()
+					groundBX -= horzMoveAmt()
 					pipeEX -= horzMoveAmt()
 					pipeFX -= horzMoveAmt()
+					QboxGX -= horzMoveAmt()
+					QboxHX -= horzMoveAmt()
+					QboxIX -= horzMoveAmt()
+					QboxJX -= horzMoveAmt()
+					QboxKX -= horzMoveAmt()
+					QboxLX -= horzMoveAmt()
+					QboxMX -= horzMoveAmt()
+					blockTX -= horzMoveAmt()
+					blockUX -= horzMoveAmt()
+					blockVX -= horzMoveAmt()
+					blockWX -= horzMoveAmt()
+					blockXX -= horzMoveAmt()
+					blockYX -= horzMoveAmt()
+					blockZX -= horzMoveAmt()
+					blockAAX -= horzMoveAmt()
+					blockABX -= horzMoveAmt()
+					blockACX -= horzMoveAmt()
+					blockADX -= horzMoveAmt()
 				
 		
 		'''
@@ -336,8 +617,6 @@ while loop:
 						starW1M.moveRight()
 		'''
 		
-		
-		
 	screen.blit(background, (backgroundX, backgroundY))
 	screen.blit(background2, (background2X, background2Y))
 	screen.blit(pipeA, (pipeAX, pipeAY))
@@ -352,7 +631,45 @@ while loop:
 	screen.blit(QboxD, (QboxDX, QboxDY))
 	screen.blit(QboxE, (QboxEX, QboxEY))
 	screen.blit(QboxF, (QboxFX, QboxFY))
+	screen.blit(QboxG, (QboxGX, QboxGY))
+	screen.blit(QboxH, (QboxHX, QboxHY))
+	screen.blit(QboxI, (QboxIX, QboxIY))
+	screen.blit(QboxJ, (QboxJX, QboxJY))
+	screen.blit(QboxK, (QboxKX, QboxKY))
+	screen.blit(QboxL, (QboxLX, QboxLY))
+	screen.blit(QboxM, (QboxMX, QboxMY))
+	screen.blit(blockA, (blockAX, blockAY))
+	screen.blit(blockB, (blockBX, blockBY))
+	screen.blit(blockC, (blockCX, blockCY))
+	screen.blit(blockD, (blockDX, blockDY))
+	screen.blit(blockE, (blockEX, blockEY))
+	screen.blit(blockF, (blockFX, blockFY))
+	screen.blit(blockG, (blockGX, blockGY))
+	screen.blit(blockH, (blockHX, blockHY))
+	screen.blit(blockI, (blockIX, blockIY))
+	screen.blit(blockJ, (blockJX, blockJY))
+	screen.blit(blockK, (blockKX, blockKY))
+	screen.blit(blockL, (blockLX, blockLY))
+	screen.blit(blockM, (blockMX, blockMY))
+	screen.blit(blockN, (blockNX, blockAY))
+	screen.blit(blockO, (blockOX, blockBY))
+	screen.blit(blockP, (blockPX, blockCY))
+	screen.blit(blockQ, (blockQX, blockDY))
+	screen.blit(blockR, (blockRX, blockEY))
+	screen.blit(blockS, (blockSX, blockFY))
+	screen.blit(blockT, (blockTX, blockGY))
+	screen.blit(blockU, (blockUX, blockHY))
+	screen.blit(blockV, (blockVX, blockIY))
+	screen.blit(blockW, (blockWX, blockJY))
+	screen.blit(blockX, (blockXX, blockKY))
+	screen.blit(blockY, (blockYX, blockLY))
+	screen.blit(blockZ, (blockZX, blockMY))
+	screen.blit(blockAA, (blockAAX, blockAAY))
+	screen.blit(blockAB, (blockABX, blockABY))
+	screen.blit(blockAC, (blockACX, blockACY))
+	screen.blit(blockAD, (blockADX, blockADY))
 	screen.blit(groundA, (groundAX, groundAY))
+	screen.blit(groundB, (groundBX, groundBY))
 	screen.blit(man, (manX, manY))
 	pygame.display.flip()
 	clock.tick(50)
