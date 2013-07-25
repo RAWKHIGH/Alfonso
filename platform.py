@@ -1,6 +1,6 @@
 # Name: Stephen McArthur
 # Purpose: Final Project. Create game with 3 levels (Easy, Medium, Hard) and a Boss level
-# GitHub: 
+# GitHub: https://github.com/RAWKHIGH/Alfonso.git
 
 import pygame
 from pygame.locals import *
@@ -69,6 +69,19 @@ blockAA = pygame.image.load('block.png')
 blockAB = pygame.image.load('block.png')
 blockAC = pygame.image.load('block.png')
 blockAD = pygame.image.load('block.png')
+starA = pygame.image.load('star.png')
+starB = pygame.image.load('star.png')
+starC = pygame.image.load('star.png')
+starD = pygame.image.load('star.png')
+starE = pygame.image.load('star.png')
+starF = pygame.image.load('star.png')
+starG = pygame.image.load('star.png')
+starH = pygame.image.load('star.png')
+starI = pygame.image.load('star.png')
+starJ = pygame.image.load('star.png')
+starK = pygame.image.load('star.png')
+starL = pygame.image.load('star.png')
+starM = pygame.image.load('star.png')
 
 
 def floorY():
@@ -188,6 +201,32 @@ blockACX = 5185
 blockACY = 320
 blockADX = 5314
 blockADY = 320
+starAX = 1040
+starAY = 270
+starBX = 1359
+starBY = 270
+starCX = 1488
+starCY = 270
+starDX = 1423
+starDY = 13
+starEX = 5008
+starEY = 270
+starFX = 6033
+starFY = 13
+starGX = 1170
+starGY = 270
+starHX = 1362
+starHY = 270
+starIX = 1554
+starIY = 270
+starJX = 1362
+starJY = 13
+starKX = 2643
+starKY = 13
+starLX = 2707
+starLY = 13
+starMX = 5267
+starMY = 270
 
 loop = True
 while loop:
@@ -207,6 +246,7 @@ while loop:
 	def horzMoveAmt():
 		return (keys[K_RIGHT] - keys[K_LEFT]) * HORZ_MOVE_INCREMENT
 
+		
 	if not jumping:
 		if keys[pygame.K_RIGHT]:
 			print (backgroundX)
@@ -242,6 +282,12 @@ while loop:
 				blockQX -= horzMoveAmt()
 				blockRX -= horzMoveAmt()
 				blockSX -= horzMoveAmt()
+				starAX -= horzMoveAmt()
+				starBX -= horzMoveAmt()
+				starCX -= horzMoveAmt()
+				starDX -= horzMoveAmt()
+				starEX -= horzMoveAmt()
+				starFX -= horzMoveAmt()
 				if backgroundX <= -5630:
 					background2X -= horzMoveAmt()
 					groundBX -= horzMoveAmt()
@@ -265,6 +311,13 @@ while loop:
 					blockABX -= horzMoveAmt()
 					blockACX -= horzMoveAmt()
 					blockADX -= horzMoveAmt()
+					starGX -= horzMoveAmt()
+					starHX -= horzMoveAmt()
+					starIX -= horzMoveAmt()
+					starJX -= horzMoveAmt()
+					starKX -= horzMoveAmt()
+					starLX -= horzMoveAmt()
+					starMX -= horzMoveAmt()
 						
 		if keys[pygame.K_LEFT]:
 			if backgroundX < 0:
@@ -299,6 +352,12 @@ while loop:
 				blockQX -= horzMoveAmt()
 				blockRX -= horzMoveAmt()
 				blockSX -= horzMoveAmt()
+				starAX -= horzMoveAmt()
+				starBX -= horzMoveAmt()
+				starCX -= horzMoveAmt()
+				starDX -= horzMoveAmt()
+				starEX -= horzMoveAmt()
+				starFX -= horzMoveAmt()
 				if backgroundX <= -5630:
 					background2X -= horzMoveAmt()
 					groundBX -= horzMoveAmt()
@@ -322,6 +381,13 @@ while loop:
 					blockABX -= horzMoveAmt()
 					blockACX -= horzMoveAmt()
 					blockADX -= horzMoveAmt()
+					starGX -= horzMoveAmt()
+					starHX -= horzMoveAmt()
+					starIX -= horzMoveAmt()
+					starJX -= horzMoveAmt()
+					starKX -= horzMoveAmt()
+					starLX -= horzMoveAmt()
+					starMX -= horzMoveAmt()
 				
 		
 		if keys[K_SPACE]:
@@ -371,6 +437,12 @@ while loop:
 				blockQX -= horzMoveAmt()
 				blockRX -= horzMoveAmt()
 				blockSX -= horzMoveAmt()
+				starAX -= horzMoveAmt()
+				starBX -= horzMoveAmt()
+				starCX -= horzMoveAmt()
+				starDX -= horzMoveAmt()
+				starEX -= horzMoveAmt()
+				starFX -= horzMoveAmt()
 				if backgroundX <= -5630:
 					background2X -= horzMoveAmt()
 					groundBX -= horzMoveAmt()
@@ -394,6 +466,13 @@ while loop:
 					blockABX -= horzMoveAmt()
 					blockACX -= horzMoveAmt()
 					blockADX -= horzMoveAmt()
+					starGX -= horzMoveAmt()
+					starHX -= horzMoveAmt()
+					starIX -= horzMoveAmt()
+					starJX -= horzMoveAmt()
+					starKX -= horzMoveAmt()
+					starLX -= horzMoveAmt()
+					starMX -= horzMoveAmt()
 				
 		
 		if keys[pygame.K_LEFT]:
@@ -436,10 +515,16 @@ while loop:
 				blockXX -= horzMoveAmt()
 				blockYX -= horzMoveAmt()
 				blockZX -= horzMoveAmt()
-				blockAAX -= horzMovAmt()
+				blockAAX -= horzMoveAmt()
 				blockABX -= horzMoveAmt()
 				blockACX -= horzMoveAmt()
 				blockADX -= horzMoveAmt()
+				starAX -= horzMoveAmt()
+				starBX -= horzMoveAmt()
+				starCX -= horzMoveAmt()
+				starDX -= horzMoveAmt()
+				starEX -= horzMoveAmt()
+				starFX -= horzMoveAmt()
 				if backgroundX <= -5630:
 					background2X -= horzMoveAmt()
 					groundBX -= horzMoveAmt()
@@ -463,160 +548,14 @@ while loop:
 					blockABX -= horzMoveAmt()
 					blockACX -= horzMoveAmt()
 					blockADX -= horzMoveAmt()
-				
-		
-		'''
-					if key[pygame.K_LEFT]:
-				player.turn = 0
-				player.image = pygame.image.load("walk L000.png")
-				if not level1A.rect.left == 0:
-					level1A.moveLeft()
-					floorw1A.moveLeft()
-					floorw1B.moveLeft()
-					floorw1C.moveLeft()
-					pipew1A.moveLeft()
-					pipew1B.moveLeft()
-					pipew1C.moveLeft()
-					pipew1D.moveLeft()
-					qboxw1A.moveLeft()
-					qboxw1B.moveLeft()
-					qboxw1C.moveLeft()
-					qboxw1D.moveLeft()
-					qboxw1E.moveLeft()
-					qboxw1F.moveLeft()
-					blockw1A.moveLeft()
-					blockw1B.moveLeft()
-					blockw1C.moveLeft()
-					blockw1D.moveLeft()
-					blockw1E.moveLeft()
-					blockw1F.moveLeft()
-					blockw1G.moveLeft()
-					blockw1H.moveLeft()
-					blockw1I.moveLeft()
-					blockw1J.moveLeft()
-					blockw1K.moveLeft()
-					blockw1L.moveLeft()
-					blockw1M.moveLeft()
-					blockw1N.moveLeft()
-					blockw1O.moveLeft()
-					blockw1P.moveLeft()
-					blockw1Q.moveLeft()
-					blockw1R.moveLeft()
-					blockw1S.moveLeft()
-					starW1A.moveLeft()
-					starW1B.moveLeft()
-					starW1C.moveLeft()
-					starW1D.moveLeft()
-					starW1E.moveLeft()
-					starW1F.moveLeft()
-					if level1A.rect.right <= 1024:
-						level1B.moveLeft()
-						floorw1D.moveLeft()
-						floorw1E.moveLeft()
-						pipew1E.moveLeft()
-						pipew1F.moveLeft()
-						qboxw1G.moveLeft()
-						qboxw1H.moveLeft()
-						qboxw1I.moveLeft()
-						qboxw1J.moveLeft()
-						qboxw1K.moveLeft()
-						qboxw1L.moveLeft()
-						qboxw1M.moveLeft()
-						blockw1T.moveLeft()
-						blockw1U.moveLeft()
-						blockw1V.moveLeft()
-						blockw1W.moveLeft()
-						blockw1X.moveLeft()
-						blockw1Y.moveLeft()
-						blockw1Z.moveLeft()
-						blockw1AA.moveLeft()
-						blockw1AB.moveLeft()
-						blockw1AC.moveLeft()
-						blockw1AD.moveLeft()
-						starW1G.moveLeft()
-						starW1H.moveLeft()
-						starW1I.moveLeft()
-						starW1J.moveLeft()
-						starW1K.moveLeft()
-						starW1L.moveLeft()
-						starW1M.moveLeft()
-
-			if key[pygame.K_RIGHT]:
-				player.turn = 1
-				player.image = pygame.image.load("walk R000.png")
-				if level1B.rect.right > 1024:
-					level1A.moveRight()
-					floorw1A.moveRight()
-					floorw1B.moveRight()
-					floorw1C.moveRight()
-					pipew1A.moveRight()
-					pipew1B.moveRight()
-					pipew1C.moveRight()
-					pipew1D.moveRight()
-					qboxw1A.moveRight()
-					qboxw1B.moveRight()
-					qboxw1C.moveRight()
-					qboxw1D.moveRight()
-					qboxw1E.moveRight()
-					qboxw1F.moveRight()
-					blockw1A.moveRight()
-					blockw1B.moveRight()
-					blockw1C.moveRight()
-					blockw1D.moveRight()
-					blockw1E.moveRight()
-					blockw1F.moveRight()
-					blockw1G.moveRight()
-					blockw1H.moveRight()
-					blockw1I.moveRight()
-					blockw1J.moveRight()
-					blockw1K.moveRight()
-					blockw1L.moveRight()
-					blockw1M.moveRight()
-					blockw1N.moveRight()
-					blockw1O.moveRight()
-					blockw1P.moveRight()
-					blockw1Q.moveRight()
-					blockw1R.moveRight()
-					blockw1S.moveRight()
-					starW1A.moveRight()
-					starW1B.moveRight()
-					starW1C.moveRight()
-					starW1D.moveRight()
-					starW1E.moveRight()
-					starW1F.moveRight()
-					if level1A.rect.right <= 1024:
-						level1B.moveRight()
-						floorw1D.moveRight()
-						floorw1E.moveRight()
-						pipew1E.moveRight()
-						pipew1F.moveRight()
-						qboxw1G.moveRight()
-						qboxw1H.moveRight()
-						qboxw1I.moveRight()
-						qboxw1J.moveRight()
-						qboxw1K.moveRight()
-						qboxw1L.moveRight()
-						qboxw1M.moveRight()
-						blockw1T.moveRight()
-						blockw1U.moveRight()
-						blockw1V.moveRight()
-						blockw1W.moveRight()
-						blockw1X.moveRight()
-						blockw1Y.moveRight()
-						blockw1Z.moveRight()
-						blockw1AA.moveRight()
-						blockw1AB.moveRight()
-						blockw1AC.moveRight()
-						blockw1AD.moveRight()
-						starW1G.moveRight()
-						starW1H.moveRight()
-						starW1I.moveRight()
-						starW1J.moveRight()
-						starW1K.moveRight()
-						starW1L.moveRight()
-						starW1M.moveRight()
-		'''
-		
+					starGX -= horzMoveAmt()
+					starHX -= horzMoveAmt()
+					starIX -= horzMoveAmt()
+					starJX -= horzMoveAmt()
+					starKX -= horzMoveAmt()
+					starLX -= horzMoveAmt()
+					starMX -= horzMoveAmt()
+	
 	screen.blit(background, (backgroundX, backgroundY))
 	screen.blit(background2, (background2X, background2Y))
 	screen.blit(pipeA, (pipeAX, pipeAY))
@@ -668,8 +607,21 @@ while loop:
 	screen.blit(blockAB, (blockABX, blockABY))
 	screen.blit(blockAC, (blockACX, blockACY))
 	screen.blit(blockAD, (blockADX, blockADY))
+	screen.blit(starA, (starAX, starAY))
+	screen.blit(starB, (starBX, starBY))
+	screen.blit(starC, (starCX, starCY))
+	screen.blit(starD, (starDX, starDY))
+	screen.blit(starE, (starEX, starEY))
+	screen.blit(starF, (starFX, starFY))
+	screen.blit(starG, (starGX, starGY))
+	screen.blit(starH, (starHX, starHY))
+	screen.blit(starI, (starIX, starIY))
+	screen.blit(starJ, (starJX, starJY))
+	screen.blit(starK, (starKX, starKY))
+	screen.blit(starL, (starLX, starLY))
+	screen.blit(starM, (starMX, starMY))
 	screen.blit(groundA, (groundAX, groundAY))
 	screen.blit(groundB, (groundBX, groundBY))
 	screen.blit(man, (manX, manY))
 	pygame.display.flip()
-	clock.tick(50)
+	clock.tick(30)

@@ -1,3 +1,1260 @@
+# Name: Stephen McArthur
+# Purpose: Final Project. Create game with 3 levels (Easy, Medium, Hard) and a Boss level
+# GitHub: https://github.com/RAWKHIGH/Alfonso.git
+
+import pygame
+from pygame import *
+
+pygame.init()
+
+black    = (  0,  0,  0)
+white    = (255,255,255)
+green    = (  0,255,  0)
+red      = (255,  0,  0)
+
+#PLAYER_SCREEN_MARGIN = 95 
+#JUMPING_DURATION = 1000
+#TIME_AT_PEAK = JUMPING_DURATION / 2
+#JUMP_HEIGHT = 1000
+
+screen = pygame.display.set_mode((1024, 672))
+class Alfonso(pygame.sprite.Sprite):
+
+	'''
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("walk R000.png")
+		self.image = self.image.convert()
+		tranColor = self.image.get_at((1, 1))
+		self.image.set_colorkey(tranColor)
+		self.rect = self.image.get_rect()
+		self.rect.center = (320, 240)
+
+		self.imgList = []
+		self.loadPics()
+
+
+	def loadPics(self):
+		fileBase = [
+			"walk R00",
+			"walk L00"
+		]
+ 
+		for dir in range(2):
+			tempList = []
+			tempFile = fileBase[dir]
+			for frame in range(2):
+				imgName = "{0}{1}.png".format(tempFile, frame)
+				tmpImg = pygame.image.load(imgName)
+				tmpImg.convert()
+				tranColor = tmpImg.get_at((0, 0))
+				tmpImg.set_colorkey(tranColor)
+				tempList.append(tmpImg)
+			self.imgList.append(tempList)
+	'''
+	# -- Attributes 
+	# Set speed vector of player
+	change_x=0
+	change_y=0
+ 
+	# Triggered if the player wants to jump.
+	jump_ready = False
+ 
+	# Count of frames since the player hit 'jump' and we
+	# collided against something. Used to prevent jumping
+	# when we haven't hit anything.
+	frame_since_collision = 0
+	frame_since_jump = 0
+	
+	
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("walk R000.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.turn = 1
+		self.height = self.rect.bottom - self.rect.top
+
+		# Change the speed of the player 
+	def changespeed_x(self,x):
+		self.change_x = x
+ 
+	def changespeed_y(self,y):
+		self.change_y = y
+           
+		# Find a new position for the player 
+	def update(self): 
+ 
+		self.rect.centerx = 450
+		
+		# Save the old y position, update, and see if we collided.
+		old_y = self.rect.y 
+		new_y = old_y + self.change_y 
+		self.rect.y = new_y
+         
+#      	 block_hit_list = pygame.sprite.spritecollide(self, blocks, False) 
+#
+#        for block in block_hit_list:
+            # We collided. Set the old pre-collision location.
+#            self.rect.y = old_y
+#            self.rect.x = old_x
+ 
+            # Stop our vertical movement
+ #           self.change_y = 0
+ 
+            # Start counting frames since we hit something
+#            self.frame_since_collision = 0
+ 
+        # If the player recently asked to jump, and we have recently
+        # had ground under our feet, go ahead and change the velocity
+        # to send us upwards
+		if self.frame_since_collision < 6 and self.frame_since_jump < 6:
+			self.frame_since_jump = 100
+			self.change_y -= 8
+ 
+		# Increment frame counters
+		self.frame_since_collision+=1
+		self.frame_since_jump+=1
+		
+		# Calculate effect of gravity.
+	def calc_grav(self):
+		self.change_y += .35
+ 
+		# See if we are on the ground.
+		if self.rect.y >= 485 and self.change_y >= 0:
+			self.change_y = 0
+			self.rect.y = 485
+			self.frame_since_collision = 0
+ 
+	# Called when user hits 'jump' button
+	def jump(self):
+		self.jump_ready = True
+		self.frame_since_jump = 0	
+		
+#	def jump(self):
+#		if self.turn == 0:
+#			self.image = pygame.image.load("jump L000.png")
+#		elif self.turn == 1:
+#			self.image = pygame.image.load("jump R000.png")
+	
+
+class World1A(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("world1(1).png")
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+#	def update(self):
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.bottom = screen.get_height()
+
+class World1B(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("world1(2).png")
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+#	def update(self):
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.left = 1024
+		self.rect.bottom = screen.get_height()
+
+class FloorW1A(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("world1(1)_ground1.png")
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.bottom = screen.get_height()
+
+class FloorW1B(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("world1(1)_ground2.png")
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.bottom = screen.get_height()
+		self.rect.left = 4544
+
+class FloorW1C(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("world1(1)_ground3.png")
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.bottom = screen.get_height()
+		self.rect.left = 5695
+
+class FloorW1D(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("world1(2)_ground1.png")
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.bottom = screen.get_height()
+		self.rect.left = 1024
+
+class FloorW1E(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("world1(2)_ground2.png")
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.bottom = screen.get_height()
+		self.rect.left = 4289
+
+class PipeW1A(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("small_pipe.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.top = 449
+		self.rect.left = 1791
+
+class PipeW1B(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("large_pipe.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.top = 383
+		self.rect.left = 2431
+
+class PipeW1C(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("large_pipe.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.top = 319
+		self.rect.left = 2943
+
+class PipeW1D(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("large_pipe.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.top = 319
+		self.rect.left = 3648
+
+class PipeW1E(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("large_pipe.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.top = 449
+		self.rect.left = 4803
+
+class PipeW1F(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("large_pipe.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.top = 449
+		self.rect.left = 5827
+
+class QboxW1A(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("Q_box.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.top = 320
+		self.rect.left = 1023
+
+class QboxW1B(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("Q_box.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.top = 320
+		self.rect.left = 1342
+
+class QboxW1C(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("Q_box.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.top = 320
+		self.rect.left = 1471
+
+class QboxW1D(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("Q_box.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.top = 63
+		self.rect.left = 1406
+
+class QboxW1E(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("Q_box.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.top = 320
+		self.rect.left = 4991
+
+class QboxW1F(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("Q_box.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.top = 63
+		self.rect.left = 6016
+
+class QboxW1G(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("Q_box.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.top = 320
+		self.rect.left = 1153
+
+class QboxW1H(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("Q_box.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.top = 320
+		self.rect.left = 1345
+
+class QboxW1I(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("Q_box.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.top = 320
+		self.rect.left = 1537
+
+class QboxW1J(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("Q_box.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.top = 63
+		self.rect.left = 1345
+
+class QboxW1K(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("Q_box.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.top = 63
+		self.rect.left = 2626
+
+class QboxW1L(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("Q_box.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.top = 63
+		self.rect.left = 2690
+
+class QboxW1M(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("Q_box.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.top = 320
+		self.rect.left = 5250
+
+
+class BlockW1A(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("block.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.top = 320
+		self.rect.left = 1278
+
+class BlockW1B(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("block.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.top = 320
+		self.rect.left = 1406
+
+class BlockW1C(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("block.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.top = 320
+		self.rect.left = 1534
+
+class BlockW1D(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("block.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.top = 320
+		self.rect.left = 4927
+
+class BlockW1E(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("block.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.top = 320
+		self.rect.left = 5056
+
+class BlockW1F(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("block.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.top = 63
+		self.rect.left = 5120
+
+class BlockW1G(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("block.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.top = 63
+		self.rect.left = 5184
+
+class BlockW1H(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("block.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.top = 63
+		self.rect.left = 5248
+
+class BlockW1I(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("block.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.top = 63
+		self.rect.left = 5312
+
+class BlockW1J(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("block.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.top = 63
+		self.rect.left = 5376
+
+class BlockW1K(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("block.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.top = 63
+		self.rect.left = 5440
+
+class BlockW1L(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("block.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.top = 63
+		self.rect.left = 5504
+
+class BlockW1M(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("block.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.top = 63
+		self.rect.left = 5568
+
+class BlockW1N(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("block.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.top = 63
+		self.rect.left = 5824
+
+class BlockW1O(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("block.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.top = 63
+		self.rect.left = 5888
+
+class BlockW1P(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("block.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.top = 63
+		self.rect.left = 5952
+
+class BlockW1Q(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("block.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.top = 320
+		self.rect.left = 6016
+
+class BlockW1R(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("block.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.top = 320
+		self.rect.left = 6400
+
+class BlockW1S(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("block.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.top = 320
+		self.rect.left = 6464
+
+class BlockW1T(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("block.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.top = 320
+		self.rect.left = 1922
+
+class BlockW1U(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("block.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.top = 63
+		self.rect.left = 2113
+
+class BlockW1V(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("block.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.top = 63
+		self.rect.left = 2177
+
+class BlockW1W(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("block.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.top = 63
+		self.rect.left = 2241
+
+class BlockW1X(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("block.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.top = 63
+		self.rect.left = 2562
+
+class BlockW1Y(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("block.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.top = 63
+		self.rect.left = 2753
+
+class BlockW1Z(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("block.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.top = 320
+		self.rect.left = 2626
+
+class BlockW1AA(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("block.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.top = 320
+		self.rect.left = 2690
+
+class BlockW1AB(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("block.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.top = 320
+		self.rect.left = 5121
+
+class BlockW1AC(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("block.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.top = 320
+		self.rect.left = 5185
+
+class BlockW1AD(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("block.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.top = 320
+		self.rect.left = 5314
+
 class StarW1A(pygame.sprite.Sprite):
 	def __init__(self):
 		pygame.sprite.Sprite.__init__(self)
@@ -13,11 +1270,11 @@ class StarW1A(pygame.sprite.Sprite):
 
 	def moveLeft(self):
 		self.rect.left += self.dx
-		
+
 	def reset(self):
 		self.rect.top = 270
 		self.rect.left = 1040
-		
+
 class StarW1B(pygame.sprite.Sprite):
 	def __init__(self):
 		pygame.sprite.Sprite.__init__(self)
@@ -33,11 +1290,11 @@ class StarW1B(pygame.sprite.Sprite):
 
 	def moveLeft(self):
 		self.rect.left += self.dx
-		
+
 	def reset(self):
 		self.rect.top = 270
 		self.rect.left = 1359
-		
+
 class StarW1C(pygame.sprite.Sprite):
 	def __init__(self):
 		pygame.sprite.Sprite.__init__(self)
@@ -53,11 +1310,11 @@ class StarW1C(pygame.sprite.Sprite):
 
 	def moveLeft(self):
 		self.rect.left += self.dx
-		
+
 	def reset(self):
 		self.rect.top = 270
 		self.rect.left = 1488
-		
+
 class StarW1D(pygame.sprite.Sprite):
 	def __init__(self):
 		pygame.sprite.Sprite.__init__(self)
@@ -73,11 +1330,11 @@ class StarW1D(pygame.sprite.Sprite):
 
 	def moveLeft(self):
 		self.rect.left += self.dx
-		
+
 	def reset(self):
 		self.rect.top = 13
 		self.rect.left = 1423
-		
+
 class StarW1E(pygame.sprite.Sprite):
 	def __init__(self):
 		pygame.sprite.Sprite.__init__(self)
@@ -93,11 +1350,11 @@ class StarW1E(pygame.sprite.Sprite):
 
 	def moveLeft(self):
 		self.rect.left += self.dx
-		
+
 	def reset(self):
 		self.rect.top = 270
 		self.rect.left = 5008
-		
+
 class StarW1F(pygame.sprite.Sprite):
 	def __init__(self):
 		pygame.sprite.Sprite.__init__(self)
@@ -113,11 +1370,11 @@ class StarW1F(pygame.sprite.Sprite):
 
 	def moveLeft(self):
 		self.rect.left += self.dx
-		
+
 	def reset(self):
 		self.rect.top = 13
 		self.rect.left = 6033
-		
+
 class StarW1G(pygame.sprite.Sprite):
 	def __init__(self):
 		pygame.sprite.Sprite.__init__(self)
@@ -133,11 +1390,11 @@ class StarW1G(pygame.sprite.Sprite):
 
 	def moveLeft(self):
 		self.rect.left += self.dx
-		
+
 	def reset(self):
 		self.rect.top = 270
 		self.rect.left = 1170
-		
+
 class StarW1H(pygame.sprite.Sprite):
 	def __init__(self):
 		pygame.sprite.Sprite.__init__(self)
@@ -153,11 +1410,11 @@ class StarW1H(pygame.sprite.Sprite):
 
 	def moveLeft(self):
 		self.rect.left += self.dx
-		
+
 	def reset(self):
 		self.rect.top = 270
 		self.rect.left = 1362
-		
+
 class StarW1I(pygame.sprite.Sprite):
 	def __init__(self):
 		pygame.sprite.Sprite.__init__(self)
@@ -173,11 +1430,11 @@ class StarW1I(pygame.sprite.Sprite):
 
 	def moveLeft(self):
 		self.rect.left += self.dx
-		
+
 	def reset(self):
 		self.rect.top = 270
 		self.rect.left = 1554
-		
+
 class StarW1J(pygame.sprite.Sprite):
 	def __init__(self):
 		pygame.sprite.Sprite.__init__(self)
@@ -193,11 +1450,11 @@ class StarW1J(pygame.sprite.Sprite):
 
 	def moveLeft(self):
 		self.rect.left += self.dx
-		
+
 	def reset(self):
 		self.rect.top = 13
 		self.rect.left = 1362
-		
+
 class StarW1K(pygame.sprite.Sprite):
 	def __init__(self):
 		pygame.sprite.Sprite.__init__(self)
@@ -213,11 +1470,11 @@ class StarW1K(pygame.sprite.Sprite):
 
 	def moveLeft(self):
 		self.rect.left += self.dx
-		
+
 	def reset(self):
 		self.rect.top = 13
 		self.rect.left = 2643
-		
+
 class StarW1L(pygame.sprite.Sprite):
 	def __init__(self):
 		pygame.sprite.Sprite.__init__(self)
@@ -233,11 +1490,11 @@ class StarW1L(pygame.sprite.Sprite):
 
 	def moveLeft(self):
 		self.rect.left += self.dx
-		
+
 	def reset(self):
 		self.rect.top = 13
 		self.rect.left = 2707
-		
+
 class StarW1M(pygame.sprite.Sprite):
 	def __init__(self):
 		pygame.sprite.Sprite.__init__(self)
@@ -253,12 +1510,33 @@ class StarW1M(pygame.sprite.Sprite):
 
 	def moveLeft(self):
 		self.rect.left += self.dx
-		
+
 	def reset(self):
 		self.rect.top = 270
 		self.rect.left = 5267
 		
+class GoombaW1A(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("goomba1.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+		 
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.bottom = screen.get_height() - 95
+		self.rect.left = 400
 		
+
 def main():
 		screen = pygame.display.set_mode((1024, 672))
 		pygame.display.set_caption("Super Mario Bros. Cousin Alfonso")
@@ -266,8 +1544,6 @@ def main():
 		background = pygame.Surface(screen.get_size())
 		background.fill((0, 0, 0))
 		screen.blit(background, (0, 0))
-		
-		score = 0
 
 		player = Alfonso()
 		level1A = World1A()
@@ -339,28 +1615,33 @@ def main():
 		starW1K = StarW1K()
 		starW1L = StarW1L()
 		starW1M = StarW1M()
-	
+		goombaW1A = GoombaW1A()
+
 		backgroundSprites = pygame.sprite.OrderedUpdates(level1B, level1A)
 		floorSprites = pygame.sprite.OrderedUpdates(floorw1A, floorw1B, floorw1C, floorw1D, floorw1E)
 		pipeSprites = pygame.sprite.OrderedUpdates(pipew1A, pipew1B, pipew1C, pipew1D, pipew1E, pipew1F)
 		QboxSprites = pygame.sprite.OrderedUpdates(qboxw1A, qboxw1B, qboxw1C, qboxw1D, qboxw1E, qboxw1F, qboxw1G, qboxw1H, qboxw1I, qboxw1J, qboxw1K, qboxw1L, qboxw1M)
 		blockSprites = pygame.sprite.OrderedUpdates(blockw1A, blockw1B, blockw1C, blockw1D, blockw1E, blockw1F, blockw1G, blockw1H, blockw1I, blockw1J, blockw1K, blockw1L, blockw1M, blockw1N, blockw1O, blockw1P, blockw1Q, blockw1R, blockw1S, blockw1T, blockw1U, blockw1V, blockw1W, blockw1X, blockw1Y, blockw1Z, blockw1AA, blockw1AB, blockw1AC, blockw1AD)
 		starSprites = pygame.sprite.OrderedUpdates(starW1A, starW1B, starW1C, starW1D, starW1E, starW1F, starW1G, starW1H, starW1I, starW1J, starW1K, starW1L, starW1M)
+		badSprites = pygame.sprite.OrderedUpdates(goombaW1A)
 		playerSprites = pygame.sprite.OrderedUpdates(player)
-		
+
 		clock = pygame.time.Clock()
 		keepGoing = True
 		while keepGoing:
 			clock.tick(30)
 			key = pygame.key.get_pressed()
+			#collision_pipes = pygame.sprite.collide_mask(playerSprites, pipeSprites)
+			jumping = False
 			pygame.mouse.set_visible(False)
 			for event in pygame.event.get():
 				if event.type == pygame.QUIT:
 					keepGoing = False
-				elif event.type == pygame.KEYDOWN:
-					if event.key == pygame.K_SPACE:
-						player.currentJump = player.rect.centery
-			
+				if event.type == pygame.KEYDOWN:
+					if event.key == pygame.K_UP:
+						player.jump()
+
+					
 			if key[pygame.K_LEFT]:
 				player.turn = 0
 				player.image = pygame.image.load("walk L000.png")
@@ -511,27 +1792,53 @@ def main():
 						starW1L.moveRight()
 						starW1M.moveRight()
 
-			if key[pygame.K_SPACE]:
-				player.jump()
-			
-			star = pygame.sprite.spritecollide(player, starSprites, True)
-			if star:
-				score += 100
-				print (score)
-			
-			if not pygame.sprite.spritecollideany(player, floorSprites):
-				if not pygame.sprite.spritecollideany(player, QboxSprites):
-					if not pygame.sprite.spritecollideany(player, blockSprites):
-						fall = 15
-						player.rect.centery += fall
-			
+#			def jumpHeightAtTime(elapsedTime):
+#				return ((-1.0/TIME_AT_PEAK**2)* \
+#					((elapsedTime-TIME_AT_PEAK)**2)+1)*JUMP_HEIGHT
+
+#			def floorY():
+#				return screen.get_height() - player.height - PLAYER_SCREEN_MARGIN
+						
+#			if key[pygame.K_SPACE]:
+#				print("Space Hit")
+#				jumping = True
+#				jumpingStart = pygame.time.get_ticks() 
+
+#			if jumping:
+#				print ("Jumping")
+#				t = pygame.time.get_ticks() - jumpingStart
+#				print (t)
+#				print (JUMPING_DURATION)
+#				print (pygame.time.get_ticks())
+#				print (jumpingStart)
+#				if t > JUMPING_DURATION:
+#					print("No More Jump")
+#					jumping = False
+#					jumpHeight = 0
+#				else:
+#					jumpHeight = jumpHeightAtTime(t)
+#					print("Still Jumping")
+
+#				player.rect.centery = floorY() - jumpHeight
+#				print (player.rect.centery)
+#				print (floorY() - jumpHeight)
 				
+				
+#			if not pygame.sprite.spritecollideany(player, floorSprites):
+#				if not pygame.sprite.spritecollideany(player, QboxSprites):
+#					if not pygame.sprite.spritecollideany(player, blockSprites):
+#						fall = 15
+#						player.rect.centery += fall
+		
+			player.calc_grav()
+			
 			playerSprites.update()
+			badSprites.update()
 			backgroundSprites.update()
 			floorSprites.update()
 			pipeSprites.update()
 			QboxSprites.update()
-			blockSprites.update()
+			#blockSprites.update()
 			starSprites.update()
 
 			backgroundSprites.draw(screen)
@@ -540,12 +1847,13 @@ def main():
 			blockSprites.draw(screen)
 			starSprites.draw(screen)
 			floorSprites.draw(screen)
+			#badSprites.draw(screen)
 			playerSprites.draw(screen)
-			
-			
+
+
 			pygame.display.flip()
-		
+
 		pygame.mouse.set_visible(True)
-		
+
 if __name__ == "__main__":
 	main()
