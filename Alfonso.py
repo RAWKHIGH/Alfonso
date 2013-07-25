@@ -74,7 +74,6 @@ class Alfonso(pygame.sprite.Sprite):
 		self.image = self.image.convert()
 		self.rect = self.image.get_rect()
 		self.turn = 1
-		self.height = self.rect.bottom - self.rect.top
 
 		# Change the speed of the player 
 	def changespeed_x(self,x):
@@ -85,27 +84,14 @@ class Alfonso(pygame.sprite.Sprite):
            
 		# Find a new position for the player 
 	def update(self): 
- 
 		self.rect.centerx = 450
+		#self.rect.bottom = screen.get_height()-95
 		
 		# Save the old y position, update, and see if we collided.
 		old_y = self.rect.y 
 		new_y = old_y + self.change_y 
 		self.rect.y = new_y
          
-#      	 block_hit_list = pygame.sprite.spritecollide(self, blocks, False) 
-#
-#        for block in block_hit_list:
-            # We collided. Set the old pre-collision location.
-#            self.rect.y = old_y
-#            self.rect.x = old_x
- 
-            # Stop our vertical movement
- #           self.change_y = 0
- 
-            # Start counting frames since we hit something
-#            self.frame_since_collision = 0
- 
         # If the player recently asked to jump, and we have recently
         # had ground under our feet, go ahead and change the velocity
         # to send us upwards
@@ -122,9 +108,9 @@ class Alfonso(pygame.sprite.Sprite):
 		self.change_y += .35
  
 		# See if we are on the ground.
-		if self.rect.y >= 485 and self.change_y >= 0:
+		if self.rect.y >= 513 and self.change_y >= 0:
 			self.change_y = 0
-			self.rect.y = 485
+			self.rect.y = 513
 			self.frame_since_collision = 0
  
 	# Called when user hits 'jump' button
@@ -132,11 +118,6 @@ class Alfonso(pygame.sprite.Sprite):
 		self.jump_ready = True
 		self.frame_since_jump = 0	
 		
-#	def jump(self):
-#		if self.turn == 0:
-#			self.image = pygame.image.load("jump L000.png")
-#		elif self.turn == 1:
-#			self.image = pygame.image.load("jump R000.png")
 	
 
 class World1A(pygame.sprite.Sprite):
@@ -1792,53 +1773,16 @@ def main():
 						starW1L.moveRight()
 						starW1M.moveRight()
 
-#			def jumpHeightAtTime(elapsedTime):
-#				return ((-1.0/TIME_AT_PEAK**2)* \
-#					((elapsedTime-TIME_AT_PEAK)**2)+1)*JUMP_HEIGHT
-
-#			def floorY():
-#				return screen.get_height() - player.height - PLAYER_SCREEN_MARGIN
-						
-#			if key[pygame.K_SPACE]:
-#				print("Space Hit")
-#				jumping = True
-#				jumpingStart = pygame.time.get_ticks() 
-
-#			if jumping:
-#				print ("Jumping")
-#				t = pygame.time.get_ticks() - jumpingStart
-#				print (t)
-#				print (JUMPING_DURATION)
-#				print (pygame.time.get_ticks())
-#				print (jumpingStart)
-#				if t > JUMPING_DURATION:
-#					print("No More Jump")
-#					jumping = False
-#					jumpHeight = 0
-#				else:
-#					jumpHeight = jumpHeightAtTime(t)
-#					print("Still Jumping")
-
-#				player.rect.centery = floorY() - jumpHeight
-#				print (player.rect.centery)
-#				print (floorY() - jumpHeight)
-				
-				
-#			if not pygame.sprite.spritecollideany(player, floorSprites):
-#				if not pygame.sprite.spritecollideany(player, QboxSprites):
-#					if not pygame.sprite.spritecollideany(player, blockSprites):
-#						fall = 15
-#						player.rect.centery += fall
 		
 			player.calc_grav()
 			
 			playerSprites.update()
-			badSprites.update()
+			#badSprites.update()
 			backgroundSprites.update()
 			floorSprites.update()
 			pipeSprites.update()
 			QboxSprites.update()
-			#blockSprites.update()
+			blockSprites.update()
 			starSprites.update()
 
 			backgroundSprites.draw(screen)
