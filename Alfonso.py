@@ -12,26 +12,35 @@ white    = (255,255,255)
 green    = (  0,255,  0)
 red      = (255,  0,  0)
 
-#PLAYER_SCREEN_MARGIN = 95 
-#JUMPING_DURATION = 1000
-#TIME_AT_PEAK = JUMPING_DURATION / 2
-#JUMP_HEIGHT = 1000
-
 screen = pygame.display.set_mode((1024, 672))
 class Alfonso(pygame.sprite.Sprite):
 
-	'''
+	# -- Attributes 
+	# Set speed vector of player
+	change_x=0
+	change_y=0
+
+	# Count of frames since the player hit 'jump' and we
+	# collided against something. Used to prevent jumping
+	# when we haven't hit anything.
+	frame_since_collision = 0
+	frame_since_jump = 0
+	
+	
 	def __init__(self):
 		pygame.sprite.Sprite.__init__(self)
 		self.image = pygame.image.load("walk R000.png")
+		self.image.set_colorkey(white)
 		self.image = self.image.convert()
-		tranColor = self.image.get_at((1, 1))
-		self.image.set_colorkey(tranColor)
 		self.rect = self.image.get_rect()
-		self.rect.center = (320, 240)
-
+		self.turn = 1
+		self.rect.bottom = 577
+		self.jump_ready = False
+		self.floor = 513
+		
 		self.imgList = []
 		self.loadPics()
+		
 
 
 	def loadPics(self):
@@ -51,30 +60,7 @@ class Alfonso(pygame.sprite.Sprite):
 				tmpImg.set_colorkey(tranColor)
 				tempList.append(tmpImg)
 			self.imgList.append(tempList)
-	'''
-	# -- Attributes 
-	# Set speed vector of player
-	change_x=0
-	change_y=0
- 
-	# Triggered if the player wants to jump.
-	jump_ready = False
- 
-	# Count of frames since the player hit 'jump' and we
-	# collided against something. Used to prevent jumping
-	# when we haven't hit anything.
-	frame_since_collision = 0
-	frame_since_jump = 0
-	
-	
-	def __init__(self):
-		pygame.sprite.Sprite.__init__(self)
-		self.image = pygame.image.load("walk R000.png")
-		self.image.set_colorkey(white)
-		self.image = self.image.convert()
-		self.rect = self.image.get_rect()
-		self.turn = 1
-
+		
 		# Change the speed of the player 
 	def changespeed_x(self,x):
 		self.change_x = x
@@ -85,7 +71,6 @@ class Alfonso(pygame.sprite.Sprite):
 		# Find a new position for the player 
 	def update(self): 
 		self.rect.centerx = 450
-		#self.rect.bottom = screen.get_height()-95
 		
 		# Save the old y position, update, and see if we collided.
 		old_y = self.rect.y 
@@ -95,9 +80,10 @@ class Alfonso(pygame.sprite.Sprite):
         # If the player recently asked to jump, and we have recently
         # had ground under our feet, go ahead and change the velocity
         # to send us upwards
-		if self.frame_since_collision < 6 and self.frame_since_jump < 6:
-			self.frame_since_jump = 100
-			self.change_y -= 8
+		if self.jump_ready == True:
+			if self.frame_since_collision < 6 and self.frame_since_jump < 6:
+				self.frame_since_jump = 100
+				self.change_y -= 16.5
  
 		# Increment frame counters
 		self.frame_since_collision+=1
@@ -105,12 +91,12 @@ class Alfonso(pygame.sprite.Sprite):
 		
 		# Calculate effect of gravity.
 	def calc_grav(self):
-		self.change_y += .35
- 
+		self.change_y += .50
+
 		# See if we are on the ground.
-		if self.rect.y >= 513 and self.change_y >= 0:
+		if self.rect.y >= self.floor and self.change_y >= 0:
 			self.change_y = 0
-			self.rect.y = 513
+			self.rect.y = self.floor
 			self.frame_since_collision = 0
  
 	# Called when user hits 'jump' button
@@ -119,7 +105,6 @@ class Alfonso(pygame.sprite.Sprite):
 		self.frame_since_jump = 0	
 		
 	
-
 class World1A(pygame.sprite.Sprite):
 	def __init__(self):
 		pygame.sprite.Sprite.__init__(self)
@@ -1526,6 +1511,8 @@ def main():
 		background.fill((0, 0, 0))
 		screen.blit(background, (0, 0))
 
+		score = 0
+		
 		player = Alfonso()
 		level1A = World1A()
 		level1B = World1B()
@@ -1607,6 +1594,7 @@ def main():
 		badSprites = pygame.sprite.OrderedUpdates(goombaW1A)
 		playerSprites = pygame.sprite.OrderedUpdates(player)
 
+		
 		clock = pygame.time.Clock()
 		keepGoing = True
 		while keepGoing:
@@ -1614,6 +1602,8 @@ def main():
 			key = pygame.key.get_pressed()
 			#collision_pipes = pygame.sprite.collide_mask(playerSprites, pipeSprites)
 			jumping = False
+			collideLeft = False
+			collideRight = False
 			pygame.mouse.set_visible(False)
 			for event in pygame.event.get():
 				if event.type == pygame.QUIT:
@@ -1626,153 +1616,182 @@ def main():
 			if key[pygame.K_LEFT]:
 				player.turn = 0
 				player.image = pygame.image.load("walk L000.png")
-				if not level1A.rect.left == 0:
-					level1A.moveLeft()
-					floorw1A.moveLeft()
-					floorw1B.moveLeft()
-					floorw1C.moveLeft()
-					pipew1A.moveLeft()
-					pipew1B.moveLeft()
-					pipew1C.moveLeft()
-					pipew1D.moveLeft()
-					qboxw1A.moveLeft()
-					qboxw1B.moveLeft()
-					qboxw1C.moveLeft()
-					qboxw1D.moveLeft()
-					qboxw1E.moveLeft()
-					qboxw1F.moveLeft()
-					blockw1A.moveLeft()
-					blockw1B.moveLeft()
-					blockw1C.moveLeft()
-					blockw1D.moveLeft()
-					blockw1E.moveLeft()
-					blockw1F.moveLeft()
-					blockw1G.moveLeft()
-					blockw1H.moveLeft()
-					blockw1I.moveLeft()
-					blockw1J.moveLeft()
-					blockw1K.moveLeft()
-					blockw1L.moveLeft()
-					blockw1M.moveLeft()
-					blockw1N.moveLeft()
-					blockw1O.moveLeft()
-					blockw1P.moveLeft()
-					blockw1Q.moveLeft()
-					blockw1R.moveLeft()
-					blockw1S.moveLeft()
-					starW1A.moveLeft()
-					starW1B.moveLeft()
-					starW1C.moveLeft()
-					starW1D.moveLeft()
-					starW1E.moveLeft()
-					starW1F.moveLeft()
-					if level1A.rect.right <= 1024:
-						level1B.moveLeft()
-						floorw1D.moveLeft()
-						floorw1E.moveLeft()
-						pipew1E.moveLeft()
-						pipew1F.moveLeft()
-						qboxw1G.moveLeft()
-						qboxw1H.moveLeft()
-						qboxw1I.moveLeft()
-						qboxw1J.moveLeft()
-						qboxw1K.moveLeft()
-						qboxw1L.moveLeft()
-						qboxw1M.moveLeft()
-						blockw1T.moveLeft()
-						blockw1U.moveLeft()
-						blockw1V.moveLeft()
-						blockw1W.moveLeft()
-						blockw1X.moveLeft()
-						blockw1Y.moveLeft()
-						blockw1Z.moveLeft()
-						blockw1AA.moveLeft()
-						blockw1AB.moveLeft()
-						blockw1AC.moveLeft()
-						blockw1AD.moveLeft()
-						starW1G.moveLeft()
-						starW1H.moveLeft()
-						starW1I.moveLeft()
-						starW1J.moveLeft()
-						starW1K.moveLeft()
-						starW1L.moveLeft()
-						starW1M.moveLeft()
+				if collideLeft == False:
+					if not level1A.rect.left == 0:
+						level1A.moveLeft()
+						floorw1A.moveLeft()
+						floorw1B.moveLeft()
+						floorw1C.moveLeft()
+						pipew1A.moveLeft()
+						pipew1B.moveLeft()
+						pipew1C.moveLeft()
+						pipew1D.moveLeft()
+						qboxw1A.moveLeft()
+						qboxw1B.moveLeft()
+						qboxw1C.moveLeft()
+						qboxw1D.moveLeft()
+						qboxw1E.moveLeft()
+						qboxw1F.moveLeft()
+						blockw1A.moveLeft()
+						blockw1B.moveLeft()
+						blockw1C.moveLeft()
+						blockw1D.moveLeft()
+						blockw1E.moveLeft()
+						blockw1F.moveLeft()
+						blockw1G.moveLeft()
+						blockw1H.moveLeft()
+						blockw1I.moveLeft()
+						blockw1J.moveLeft()
+						blockw1K.moveLeft()
+						blockw1L.moveLeft()
+						blockw1M.moveLeft()
+						blockw1N.moveLeft()
+						blockw1O.moveLeft()
+						blockw1P.moveLeft()
+						blockw1Q.moveLeft()
+						blockw1R.moveLeft()
+						blockw1S.moveLeft()
+						starW1A.moveLeft()
+						starW1B.moveLeft()
+						starW1C.moveLeft()
+						starW1D.moveLeft()
+						starW1E.moveLeft()
+						starW1F.moveLeft()
+						if level1A.rect.right <= 1024:
+							level1B.moveLeft()
+							floorw1D.moveLeft()
+							floorw1E.moveLeft()
+							pipew1E.moveLeft()
+							pipew1F.moveLeft()
+							qboxw1G.moveLeft()
+							qboxw1H.moveLeft()
+							qboxw1I.moveLeft()
+							qboxw1J.moveLeft()
+							qboxw1K.moveLeft()
+							qboxw1L.moveLeft()
+							qboxw1M.moveLeft()
+							blockw1T.moveLeft()
+							blockw1U.moveLeft()
+							blockw1V.moveLeft()
+							blockw1W.moveLeft()
+							blockw1X.moveLeft()
+							blockw1Y.moveLeft()
+							blockw1Z.moveLeft()
+							blockw1AA.moveLeft()
+							blockw1AB.moveLeft()
+							blockw1AC.moveLeft()
+							blockw1AD.moveLeft()
+							starW1G.moveLeft()
+							starW1H.moveLeft()
+							starW1I.moveLeft()
+							starW1J.moveLeft()
+							starW1K.moveLeft()
+							starW1L.moveLeft()
+							starW1M.moveLeft()
 
 			if key[pygame.K_RIGHT]:
 				player.turn = 1
 				player.image = pygame.image.load("walk R000.png")
-				if level1B.rect.right > 1024:
-					level1A.moveRight()
-					floorw1A.moveRight()
-					floorw1B.moveRight()
-					floorw1C.moveRight()
-					pipew1A.moveRight()
-					pipew1B.moveRight()
-					pipew1C.moveRight()
-					pipew1D.moveRight()
-					qboxw1A.moveRight()
-					qboxw1B.moveRight()
-					qboxw1C.moveRight()
-					qboxw1D.moveRight()
-					qboxw1E.moveRight()
-					qboxw1F.moveRight()
-					blockw1A.moveRight()
-					blockw1B.moveRight()
-					blockw1C.moveRight()
-					blockw1D.moveRight()
-					blockw1E.moveRight()
-					blockw1F.moveRight()
-					blockw1G.moveRight()
-					blockw1H.moveRight()
-					blockw1I.moveRight()
-					blockw1J.moveRight()
-					blockw1K.moveRight()
-					blockw1L.moveRight()
-					blockw1M.moveRight()
-					blockw1N.moveRight()
-					blockw1O.moveRight()
-					blockw1P.moveRight()
-					blockw1Q.moveRight()
-					blockw1R.moveRight()
-					blockw1S.moveRight()
-					starW1A.moveRight()
-					starW1B.moveRight()
-					starW1C.moveRight()
-					starW1D.moveRight()
-					starW1E.moveRight()
-					starW1F.moveRight()
-					if level1A.rect.right <= 1024:
-						level1B.moveRight()
-						floorw1D.moveRight()
-						floorw1E.moveRight()
-						pipew1E.moveRight()
-						pipew1F.moveRight()
-						qboxw1G.moveRight()
-						qboxw1H.moveRight()
-						qboxw1I.moveRight()
-						qboxw1J.moveRight()
-						qboxw1K.moveRight()
-						qboxw1L.moveRight()
-						qboxw1M.moveRight()
-						blockw1T.moveRight()
-						blockw1U.moveRight()
-						blockw1V.moveRight()
-						blockw1W.moveRight()
-						blockw1X.moveRight()
-						blockw1Y.moveRight()
-						blockw1Z.moveRight()
-						blockw1AA.moveRight()
-						blockw1AB.moveRight()
-						blockw1AC.moveRight()
-						blockw1AD.moveRight()
-						starW1G.moveRight()
-						starW1H.moveRight()
-						starW1I.moveRight()
-						starW1J.moveRight()
-						starW1K.moveRight()
-						starW1L.moveRight()
-						starW1M.moveRight()
+				if collideRight == False:
+					if level1B.rect.right > 1024:
+						level1A.moveRight()
+						floorw1A.moveRight()
+						floorw1B.moveRight()
+						floorw1C.moveRight()
+						pipew1A.moveRight()
+						pipew1B.moveRight()
+						pipew1C.moveRight()
+						pipew1D.moveRight()
+						qboxw1A.moveRight()
+						qboxw1B.moveRight()
+						qboxw1C.moveRight()
+						qboxw1D.moveRight()
+						qboxw1E.moveRight()
+						qboxw1F.moveRight()
+						blockw1A.moveRight()
+						blockw1B.moveRight()
+						blockw1C.moveRight()
+						blockw1D.moveRight()
+						blockw1E.moveRight()
+						blockw1F.moveRight()
+						blockw1G.moveRight()
+						blockw1H.moveRight()
+						blockw1I.moveRight()
+						blockw1J.moveRight()
+						blockw1K.moveRight()
+						blockw1L.moveRight()
+						blockw1M.moveRight()
+						blockw1N.moveRight()
+						blockw1O.moveRight()
+						blockw1P.moveRight()
+						blockw1Q.moveRight()
+						blockw1R.moveRight()
+						blockw1S.moveRight()
+						starW1A.moveRight()
+						starW1B.moveRight()
+						starW1C.moveRight()
+						starW1D.moveRight()
+						starW1E.moveRight()
+						starW1F.moveRight()
+						if level1A.rect.right <= 1024:
+							level1B.moveRight()
+							floorw1D.moveRight()
+							floorw1E.moveRight()
+							pipew1E.moveRight()
+							pipew1F.moveRight()
+							qboxw1G.moveRight()
+							qboxw1H.moveRight()
+							qboxw1I.moveRight()
+							qboxw1J.moveRight()
+							qboxw1K.moveRight()
+							qboxw1L.moveRight()
+							qboxw1M.moveRight()
+							blockw1T.moveRight()
+							blockw1U.moveRight()
+							blockw1V.moveRight()
+							blockw1W.moveRight()
+							blockw1X.moveRight()
+							blockw1Y.moveRight()
+							blockw1Z.moveRight()
+							blockw1AA.moveRight()
+							blockw1AB.moveRight()
+							blockw1AC.moveRight()
+							blockw1AD.moveRight()
+							starW1G.moveRight()
+							starW1H.moveRight()
+							starW1I.moveRight()
+							starW1J.moveRight()
+							starW1K.moveRight()
+							starW1L.moveRight()
+							starW1M.moveRight()
 
+						
+			blockCollide = pygame.sprite.spritecollide(player, blockSprites, False)
+			qboxCollide = pygame.sprite.spritecollide(player, QboxSprites, False)
+			pipeCollide = pygame.sprite.spritecollide(player, pipeSprites, False)
+			pipeCollideR = pygame.sprite.spritecollide(player, pipeSprites, False)
+			starCollide = pygame.sprite.spritecollide(player, starSprites, True)
+			
+			if blockCollide:	
+				for theBlock in blockCollide:
+					if player.rect.bottom == (theBlock.rect.top + 1):
+						player.floor = (theBlock.rect.top - 64)
+			elif qboxCollide:	
+				for theQbox in qboxCollide:
+					if player.rect.bottom == (theQbox.rect.top + 1):
+						player.floor = (theQbox.rect.top - 64)
+			elif pipeCollide:	
+				for thePipe in pipeCollide:
+					player.floor = (thePipe.rect.top - 64)
+			else:
+				player.floor = 513
+
+			ScoreMessage = "Your Score is: "
+			
+			if starCollide:
+				score += 100
+				print (ScoreMessage, score)
+		
 		
 			player.calc_grav()
 			
