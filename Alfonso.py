@@ -1489,8 +1489,8 @@ class GoombaW1A(pygame.sprite.Sprite):
 		self.image = self.image.convert()
 		self.rect = self.image.get_rect()
 		self.dx = 10
+		self.speed = 1
 		self.reset()
-		 
 
 	def moveRight(self):
 		self.rect.left -= self.dx
@@ -1500,9 +1500,108 @@ class GoombaW1A(pygame.sprite.Sprite):
 
 	def reset(self):
 		self.rect.bottom = screen.get_height() - 95
-		self.rect.left = 400
+		self.rect.centerx = 2160
+	
+	def update(self):
+		self.rect.centerx += self.speed
 		
 
+class GoombaW1B(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("goomba1.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.speed = -1
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.bottom = screen.get_height() - 95
+		self.rect.centerx = 2109
+	
+	def update(self):
+		self.rect.centerx += self.speed
+		
+class GoombaW1C(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("goomba1.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.speed = -1
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.bottom = screen.get_height() - 95
+		self.rect.centerx = 2725
+	
+	def update(self):
+		self.rect.centerx += self.speed
+		
+class GoombaW1D(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("goomba1.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.speed = -1
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.bottom = screen.get_height() - 95
+		self.rect.centerx = 3266
+	
+	def update(self):
+		self.rect.centerx += self.speed
+		
+class GoombaW1E(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("goomba1.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.speed = 1
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.bottom = screen.get_height() - 95
+		self.rect.centerx = 3329
+	
+	def update(self):
+		self.rect.centerx += self.speed	
+		
 def main():
 		screen = pygame.display.set_mode((1024, 672))
 		pygame.display.set_caption("Super Mario Bros. Cousin Alfonso")
@@ -1584,6 +1683,10 @@ def main():
 		starW1L = StarW1L()
 		starW1M = StarW1M()
 		goombaW1A = GoombaW1A()
+		goombaW1B = GoombaW1B()
+		goombaW1C = GoombaW1C()
+		goombaW1D = GoombaW1D()
+		goombaW1E = GoombaW1E()
 
 		backgroundSprites = pygame.sprite.OrderedUpdates(level1B, level1A)
 		floorSprites = pygame.sprite.OrderedUpdates(floorw1A, floorw1B, floorw1C, floorw1D, floorw1E)
@@ -1591,7 +1694,7 @@ def main():
 		QboxSprites = pygame.sprite.OrderedUpdates(qboxw1A, qboxw1B, qboxw1C, qboxw1D, qboxw1E, qboxw1F, qboxw1G, qboxw1H, qboxw1I, qboxw1J, qboxw1K, qboxw1L, qboxw1M)
 		blockSprites = pygame.sprite.OrderedUpdates(blockw1A, blockw1B, blockw1C, blockw1D, blockw1E, blockw1F, blockw1G, blockw1H, blockw1I, blockw1J, blockw1K, blockw1L, blockw1M, blockw1N, blockw1O, blockw1P, blockw1Q, blockw1R, blockw1S, blockw1T, blockw1U, blockw1V, blockw1W, blockw1X, blockw1Y, blockw1Z, blockw1AA, blockw1AB, blockw1AC, blockw1AD)
 		starSprites = pygame.sprite.OrderedUpdates(starW1A, starW1B, starW1C, starW1D, starW1E, starW1F, starW1G, starW1H, starW1I, starW1J, starW1K, starW1L, starW1M)
-		badSprites = pygame.sprite.OrderedUpdates(goombaW1A)
+		badSprites = pygame.sprite.OrderedUpdates(goombaW1A, goombaW1B, goombaW1C, goombaW1D, goombaW1E)
 		playerSprites = pygame.sprite.OrderedUpdates(player)
 
 		
@@ -1600,7 +1703,6 @@ def main():
 		while keepGoing:
 			clock.tick(30)
 			key = pygame.key.get_pressed()
-			#collision_pipes = pygame.sprite.collide_mask(playerSprites, pipeSprites)
 			jumping = False
 			collideLeft = False
 			collideRight = False
@@ -1657,6 +1759,11 @@ def main():
 						starW1D.moveLeft()
 						starW1E.moveLeft()
 						starW1F.moveLeft()
+						goombaW1A.moveLeft()
+						goombaW1B.moveLeft()
+						goombaW1C.moveLeft()
+						goombaW1D.moveLeft()
+						goombaW1E.moveLeft()
 						if level1A.rect.right <= 1024:
 							level1B.moveLeft()
 							floorw1D.moveLeft()
@@ -1733,6 +1840,11 @@ def main():
 						starW1D.moveRight()
 						starW1E.moveRight()
 						starW1F.moveRight()
+						goombaW1A.moveRight()
+						goombaW1B.moveRight()
+						goombaW1C.moveRight()
+						goombaW1D.moveRight()
+						goombaW1E.moveRight()
 						if level1A.rect.right <= 1024:
 							level1B.moveRight()
 							floorw1D.moveRight()
@@ -1771,6 +1883,8 @@ def main():
 			pipeCollide = pygame.sprite.spritecollide(player, pipeSprites, False)
 			pipeCollideR = pygame.sprite.spritecollide(player, pipeSprites, False)
 			starCollide = pygame.sprite.spritecollide(player, starSprites, True)
+			GpipeColide = pygame.sprite.groupcollide(badSprites, pipeSprites, False, False)
+			PgoombaColide = pygame.sprite.groupcollide(pipeSprites, badSprites, False, False)
 			
 			if blockCollide:	
 				for theBlock in blockCollide:
@@ -1785,7 +1899,22 @@ def main():
 					player.floor = (thePipe.rect.top - 64)
 			else:
 				player.floor = 513
-
+			
+			
+			if GpipeColide and PgoombaColide:
+				for goomba in GpipeColide:
+					Thegoomba = goomba	
+				for pipe in PgoombaColide:
+					Thepipe = pipe
+				if Thegoomba.rect.right == (Thepipe.rect.left + 1):
+					print ("in IF")
+					Thegoomba.speed = -1
+				if (Thegoomba.rect.left + 1) == (Thepipe.rect.right):
+					print ("in ELIF")
+					Thegoomba.speed = 1
+					
+				
+				
 			ScoreMessage = "Your Score is: "
 			
 			if starCollide:
@@ -1796,7 +1925,7 @@ def main():
 			player.calc_grav()
 			
 			playerSprites.update()
-			#badSprites.update()
+			badSprites.update()
 			backgroundSprites.update()
 			floorSprites.update()
 			pipeSprites.update()
@@ -1810,7 +1939,7 @@ def main():
 			blockSprites.draw(screen)
 			starSprites.draw(screen)
 			floorSprites.draw(screen)
-			#badSprites.draw(screen)
+			badSprites.draw(screen)
 			playerSprites.draw(screen)
 
 
