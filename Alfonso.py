@@ -339,7 +339,7 @@ class PipeW1E(pygame.sprite.Sprite):
 	def reset(self):
 		self.rect.top = 449
 		self.rect.left = 4803
-
+		
 class PipeW1F(pygame.sprite.Sprite):
 	def __init__(self):
 		pygame.sprite.Sprite.__init__(self)
@@ -359,6 +359,27 @@ class PipeW1F(pygame.sprite.Sprite):
 	def reset(self):
 		self.rect.top = 449
 		self.rect.left = 5827
+		
+class PipeW1G(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("large_pipe.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.top = 449
+		self.rect.left = 6417
+		
 
 class QboxW1A(pygame.sprite.Sprite):
 	def __init__(self):
@@ -1602,6 +1623,174 @@ class GoombaW1E(pygame.sprite.Sprite):
 	def update(self):
 		self.rect.centerx += self.speed	
 		
+class GoombaW1F(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("goomba1.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.speed = -1
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.bottom = screen.get_height() - 95
+		self.rect.centerx = 4442
+	
+	def update(self):
+		self.rect.centerx += self.speed	
+		
+class GoombaW1G(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("goomba1.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.speed = 1
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.bottom = screen.get_height() - 95
+		self.rect.centerx = 5661
+	
+	def update(self):
+		self.rect.centerx += self.speed	
+		
+class GoombaW1H(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("goomba1.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.speed = -1
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.bottom = screen.get_height() - 95
+		self.rect.centerx = 6277
+	
+	def update(self):
+		self.rect.centerx += self.speed	
+		
+class GoombaW1I(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("goomba1.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.speed = -1
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.bottom = screen.get_height() - 95
+		self.rect.centerx = 1740
+	
+	def update(self):
+		self.rect.centerx += self.speed	
+		
+class GoombaW1J(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("goomba1.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.speed = 1
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.bottom = screen.get_height() - 95
+		self.rect.centerx = 2817
+	
+	def update(self):
+		self.rect.centerx += self.speed	
+		
+class GoombaW1K(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("goomba1.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.speed = 1
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.bottom = screen.get_height() - 95
+		self.rect.centerx = 4302
+	
+	def update(self):
+		self.rect.centerx += self.speed	
+		
+class GoombaW1L(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("goomba1.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.speed = -1
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.bottom = screen.get_height() - 95
+		self.rect.centerx = 5387
+	
+	def update(self):
+		self.rect.centerx += self.speed
+		
 def main():
 		screen = pygame.display.set_mode((1024, 672))
 		pygame.display.set_caption("Super Mario Bros. Cousin Alfonso")
@@ -1626,6 +1815,7 @@ def main():
 		pipew1D = PipeW1D()
 		pipew1E = PipeW1E()
 		pipew1F = PipeW1F()
+		pipew1G = PipeW1G()
 		qboxw1A = QboxW1A()
 		qboxw1B = QboxW1B()
 		qboxw1C = QboxW1C()
@@ -1687,14 +1877,21 @@ def main():
 		goombaW1C = GoombaW1C()
 		goombaW1D = GoombaW1D()
 		goombaW1E = GoombaW1E()
+		goombaW1F = GoombaW1F()
+		goombaW1G = GoombaW1G()
+		goombaW1H = GoombaW1H()
+		#goombaW1I = GoombaW1I()
+		#goombaW1J = GoombaW1J()
+		#goombaW1K = GoombaW1K()
+		#goombaW1L = GoombaW1L()
 
 		backgroundSprites = pygame.sprite.OrderedUpdates(level1B, level1A)
 		floorSprites = pygame.sprite.OrderedUpdates(floorw1A, floorw1B, floorw1C, floorw1D, floorw1E)
-		pipeSprites = pygame.sprite.OrderedUpdates(pipew1A, pipew1B, pipew1C, pipew1D, pipew1E, pipew1F)
+		pipeSprites = pygame.sprite.OrderedUpdates(pipew1A, pipew1B, pipew1C, pipew1D, pipew1E, pipew1F, pipew1G)
 		QboxSprites = pygame.sprite.OrderedUpdates(qboxw1A, qboxw1B, qboxw1C, qboxw1D, qboxw1E, qboxw1F, qboxw1G, qboxw1H, qboxw1I, qboxw1J, qboxw1K, qboxw1L, qboxw1M)
 		blockSprites = pygame.sprite.OrderedUpdates(blockw1A, blockw1B, blockw1C, blockw1D, blockw1E, blockw1F, blockw1G, blockw1H, blockw1I, blockw1J, blockw1K, blockw1L, blockw1M, blockw1N, blockw1O, blockw1P, blockw1Q, blockw1R, blockw1S, blockw1T, blockw1U, blockw1V, blockw1W, blockw1X, blockw1Y, blockw1Z, blockw1AA, blockw1AB, blockw1AC, blockw1AD)
 		starSprites = pygame.sprite.OrderedUpdates(starW1A, starW1B, starW1C, starW1D, starW1E, starW1F, starW1G, starW1H, starW1I, starW1J, starW1K, starW1L, starW1M)
-		badSprites = pygame.sprite.OrderedUpdates(goombaW1A, goombaW1B, goombaW1C, goombaW1D, goombaW1E)
+		badSprites = pygame.sprite.OrderedUpdates(goombaW1A, goombaW1B, goombaW1C, goombaW1D, goombaW1E, goombaW1F, goombaW1G, goombaW1H)
 		playerSprites = pygame.sprite.OrderedUpdates(player)
 
 		
@@ -1728,6 +1925,7 @@ def main():
 						pipew1B.moveLeft()
 						pipew1C.moveLeft()
 						pipew1D.moveLeft()
+						pipew1G.moveLeft()
 						qboxw1A.moveLeft()
 						qboxw1B.moveLeft()
 						qboxw1C.moveLeft()
@@ -1764,6 +1962,9 @@ def main():
 						goombaW1C.moveLeft()
 						goombaW1D.moveLeft()
 						goombaW1E.moveLeft()
+						goombaW1F.moveLeft()
+						goombaW1G.moveLeft()
+						goombaW1H.moveLeft()
 						if level1A.rect.right <= 1024:
 							level1B.moveLeft()
 							floorw1D.moveLeft()
@@ -1795,6 +1996,10 @@ def main():
 							starW1K.moveLeft()
 							starW1L.moveLeft()
 							starW1M.moveLeft()
+							#goombaW1I.moveLeft()
+							#goombaW1J.moveLeft()
+							#goombaW1K.moveLeft()
+							#goombaW1L.moveLeft()
 
 			if key[pygame.K_RIGHT]:
 				player.turn = 1
@@ -1809,6 +2014,7 @@ def main():
 						pipew1B.moveRight()
 						pipew1C.moveRight()
 						pipew1D.moveRight()
+						pipew1G.moveRight()
 						qboxw1A.moveRight()
 						qboxw1B.moveRight()
 						qboxw1C.moveRight()
@@ -1845,6 +2051,9 @@ def main():
 						goombaW1C.moveRight()
 						goombaW1D.moveRight()
 						goombaW1E.moveRight()
+						goombaW1F.moveRight()
+						goombaW1G.moveRight()
+						goombaW1H.moveRight()
 						if level1A.rect.right <= 1024:
 							level1B.moveRight()
 							floorw1D.moveRight()
@@ -1876,6 +2085,10 @@ def main():
 							starW1K.moveRight()
 							starW1L.moveRight()
 							starW1M.moveRight()
+							#goombaW1I.moveRight()
+							#goombaW1J.moveRight()
+							#goombaW1K.moveRight()
+							#goombaW1L.moveRight()
 
 						
 			blockCollide = pygame.sprite.spritecollide(player, blockSprites, False)
@@ -1906,11 +2119,19 @@ def main():
 					Thegoomba = goomba	
 				for pipe in PgoombaColide:
 					Thepipe = pipe
+				print (Thegoomba)
+				print (Thepipe)
+				print ("goomba left")
+				print (Thegoomba.rect.left)
+				print ("gooba right")
+				print (Thegoomba.rect.right)
+				print ("pipe life")
+				print (Thepipe.rect.left)	
+				print ("pipe right")
+				print (Thepipe.rect.right)
 				if Thegoomba.rect.right == (Thepipe.rect.left + 1):
-					print ("in IF")
 					Thegoomba.speed = -1
 				if (Thegoomba.rect.left + 1) == (Thepipe.rect.right):
-					print ("in ELIF")
 					Thegoomba.speed = 1
 					
 				
