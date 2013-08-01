@@ -143,9 +143,20 @@ class World1B(pygame.sprite.Sprite):
 		self.rect.left += self.dx
 
 	def reset(self):
-		self.rect.left = 1024
 		self.rect.bottom = screen.get_height()
 
+class Scoreboard(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.lives = 5
+        self.score = 0
+        self.font = pygame.font.SysFont("None", 30)
+        
+    def update(self):
+        self.text = " lives: %d     Super Mario BROS. Cousin Alfonso     score: %d" % (self.lives, self.score)
+        self.image = self.font.render(self.text, 1, (255, 255, 255))
+        self.rect = self.image.get_rect()
+		
 class FloorW1A(pygame.sprite.Sprite):
 	def __init__(self):
 		pygame.sprite.Sprite.__init__(self)
@@ -219,7 +230,7 @@ class FloorW1D(pygame.sprite.Sprite):
 
 	def reset(self):
 		self.rect.bottom = screen.get_height()
-		self.rect.left = 1024
+		self.rect.left = 6658
 
 class FloorW1E(pygame.sprite.Sprite):
 	def __init__(self):
@@ -238,7 +249,7 @@ class FloorW1E(pygame.sprite.Sprite):
 
 	def reset(self):
 		self.rect.bottom = screen.get_height()
-		self.rect.left = 4289
+		self.rect.left = 9923
 
 class PipeW1A(pygame.sprite.Sprite):
 	def __init__(self):
@@ -338,7 +349,7 @@ class PipeW1E(pygame.sprite.Sprite):
 
 	def reset(self):
 		self.rect.top = 449
-		self.rect.left = 4803
+		self.rect.left = 10437
 		
 class PipeW1F(pygame.sprite.Sprite):
 	def __init__(self):
@@ -358,7 +369,7 @@ class PipeW1F(pygame.sprite.Sprite):
 
 	def reset(self):
 		self.rect.top = 449
-		self.rect.left = 5827
+		self.rect.left = 11644
 		
 class PipeW1G(pygame.sprite.Sprite):
 	def __init__(self):
@@ -378,8 +389,27 @@ class PipeW1G(pygame.sprite.Sprite):
 
 	def reset(self):
 		self.rect.top = 449
-		self.rect.left = 6417
-		
+		self.rect.left = 9268
+
+class PipeW1H(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("large_pipe.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.top = 449
+		self.rect.left = 8068		
 
 class QboxW1A(pygame.sprite.Sprite):
 	def __init__(self):
@@ -519,7 +549,7 @@ class QboxW1G(pygame.sprite.Sprite):
 
 	def reset(self):
 		self.rect.top = 320
-		self.rect.left = 1153
+		self.rect.left = 6787
 
 class QboxW1H(pygame.sprite.Sprite):
 	def __init__(self):
@@ -539,7 +569,7 @@ class QboxW1H(pygame.sprite.Sprite):
 
 	def reset(self):
 		self.rect.top = 320
-		self.rect.left = 1345
+		self.rect.left = 6979
 
 class QboxW1I(pygame.sprite.Sprite):
 	def __init__(self):
@@ -559,7 +589,7 @@ class QboxW1I(pygame.sprite.Sprite):
 
 	def reset(self):
 		self.rect.top = 320
-		self.rect.left = 1537
+		self.rect.left = 7171
 
 class QboxW1J(pygame.sprite.Sprite):
 	def __init__(self):
@@ -579,7 +609,7 @@ class QboxW1J(pygame.sprite.Sprite):
 
 	def reset(self):
 		self.rect.top = 63
-		self.rect.left = 1345
+		self.rect.left = 6979
 
 class QboxW1K(pygame.sprite.Sprite):
 	def __init__(self):
@@ -599,7 +629,7 @@ class QboxW1K(pygame.sprite.Sprite):
 
 	def reset(self):
 		self.rect.top = 63
-		self.rect.left = 2626
+		self.rect.left = 8260
 
 class QboxW1L(pygame.sprite.Sprite):
 	def __init__(self):
@@ -619,7 +649,7 @@ class QboxW1L(pygame.sprite.Sprite):
 
 	def reset(self):
 		self.rect.top = 63
-		self.rect.left = 2690
+		self.rect.left = 8324
 
 class QboxW1M(pygame.sprite.Sprite):
 	def __init__(self):
@@ -639,7 +669,7 @@ class QboxW1M(pygame.sprite.Sprite):
 
 	def reset(self):
 		self.rect.top = 320
-		self.rect.left = 5250
+		self.rect.left = 10884
 
 
 class BlockW1A(pygame.sprite.Sprite):
@@ -1040,7 +1070,7 @@ class BlockW1T(pygame.sprite.Sprite):
 
 	def reset(self):
 		self.rect.top = 320
-		self.rect.left = 1922
+		self.rect.left = 7556
 
 class BlockW1U(pygame.sprite.Sprite):
 	def __init__(self):
@@ -1060,7 +1090,7 @@ class BlockW1U(pygame.sprite.Sprite):
 
 	def reset(self):
 		self.rect.top = 63
-		self.rect.left = 2113
+		self.rect.left = 7747
 
 class BlockW1V(pygame.sprite.Sprite):
 	def __init__(self):
@@ -1080,7 +1110,7 @@ class BlockW1V(pygame.sprite.Sprite):
 
 	def reset(self):
 		self.rect.top = 63
-		self.rect.left = 2177
+		self.rect.left = 7811
 
 class BlockW1W(pygame.sprite.Sprite):
 	def __init__(self):
@@ -1100,7 +1130,7 @@ class BlockW1W(pygame.sprite.Sprite):
 
 	def reset(self):
 		self.rect.top = 63
-		self.rect.left = 2241
+		self.rect.left = 7875
 
 class BlockW1X(pygame.sprite.Sprite):
 	def __init__(self):
@@ -1120,7 +1150,7 @@ class BlockW1X(pygame.sprite.Sprite):
 
 	def reset(self):
 		self.rect.top = 63
-		self.rect.left = 2562
+		self.rect.left = 8196
 
 class BlockW1Y(pygame.sprite.Sprite):
 	def __init__(self):
@@ -1140,7 +1170,7 @@ class BlockW1Y(pygame.sprite.Sprite):
 
 	def reset(self):
 		self.rect.top = 63
-		self.rect.left = 2753
+		self.rect.left = 8387
 
 class BlockW1Z(pygame.sprite.Sprite):
 	def __init__(self):
@@ -1160,7 +1190,7 @@ class BlockW1Z(pygame.sprite.Sprite):
 
 	def reset(self):
 		self.rect.top = 320
-		self.rect.left = 2626
+		self.rect.left = 8260
 
 class BlockW1AA(pygame.sprite.Sprite):
 	def __init__(self):
@@ -1180,7 +1210,7 @@ class BlockW1AA(pygame.sprite.Sprite):
 
 	def reset(self):
 		self.rect.top = 320
-		self.rect.left = 2690
+		self.rect.left = 8324
 
 class BlockW1AB(pygame.sprite.Sprite):
 	def __init__(self):
@@ -1200,7 +1230,7 @@ class BlockW1AB(pygame.sprite.Sprite):
 
 	def reset(self):
 		self.rect.top = 320
-		self.rect.left = 5121
+		self.rect.left = 10755
 
 class BlockW1AC(pygame.sprite.Sprite):
 	def __init__(self):
@@ -1220,7 +1250,7 @@ class BlockW1AC(pygame.sprite.Sprite):
 
 	def reset(self):
 		self.rect.top = 320
-		self.rect.left = 5185
+		self.rect.left = 10819
 
 class BlockW1AD(pygame.sprite.Sprite):
 	def __init__(self):
@@ -1240,7 +1270,7 @@ class BlockW1AD(pygame.sprite.Sprite):
 
 	def reset(self):
 		self.rect.top = 320
-		self.rect.left = 5314
+		self.rect.left = 10948
 
 class StarW1A(pygame.sprite.Sprite):
 	def __init__(self):
@@ -1380,7 +1410,7 @@ class StarW1G(pygame.sprite.Sprite):
 
 	def reset(self):
 		self.rect.top = 270
-		self.rect.left = 1170
+		self.rect.left = 6804
 
 class StarW1H(pygame.sprite.Sprite):
 	def __init__(self):
@@ -1400,7 +1430,7 @@ class StarW1H(pygame.sprite.Sprite):
 
 	def reset(self):
 		self.rect.top = 270
-		self.rect.left = 1362
+		self.rect.left = 6996
 
 class StarW1I(pygame.sprite.Sprite):
 	def __init__(self):
@@ -1420,7 +1450,7 @@ class StarW1I(pygame.sprite.Sprite):
 
 	def reset(self):
 		self.rect.top = 270
-		self.rect.left = 1554
+		self.rect.left = 7188
 
 class StarW1J(pygame.sprite.Sprite):
 	def __init__(self):
@@ -1440,7 +1470,7 @@ class StarW1J(pygame.sprite.Sprite):
 
 	def reset(self):
 		self.rect.top = 13
-		self.rect.left = 1362
+		self.rect.left = 6996
 
 class StarW1K(pygame.sprite.Sprite):
 	def __init__(self):
@@ -1460,7 +1490,7 @@ class StarW1K(pygame.sprite.Sprite):
 
 	def reset(self):
 		self.rect.top = 13
-		self.rect.left = 2643
+		self.rect.left = 8277
 
 class StarW1L(pygame.sprite.Sprite):
 	def __init__(self):
@@ -1480,7 +1510,7 @@ class StarW1L(pygame.sprite.Sprite):
 
 	def reset(self):
 		self.rect.top = 13
-		self.rect.left = 2707
+		self.rect.left = 8341
 
 class StarW1M(pygame.sprite.Sprite):
 	def __init__(self):
@@ -1500,7 +1530,7 @@ class StarW1M(pygame.sprite.Sprite):
 
 	def reset(self):
 		self.rect.top = 270
-		self.rect.left = 5267
+		self.rect.left = 10901
 		
 class GoombaW1A(pygame.sprite.Sprite):
 	def __init__(self):
@@ -1666,7 +1696,7 @@ class GoombaW1G(pygame.sprite.Sprite):
 
 	def reset(self):
 		self.rect.bottom = screen.get_height() - 95
-		self.rect.centerx = 5661
+		self.rect.centerx = 5121
 	
 	def update(self):
 		self.rect.centerx += self.speed	
@@ -1679,7 +1709,7 @@ class GoombaW1H(pygame.sprite.Sprite):
 		self.image = self.image.convert()
 		self.rect = self.image.get_rect()
 		self.dx = 10
-		self.speed = -1
+		self.speed = 1
 		self.reset()
 
 	def moveRight(self):
@@ -1690,7 +1720,7 @@ class GoombaW1H(pygame.sprite.Sprite):
 
 	def reset(self):
 		self.rect.bottom = screen.get_height() - 95
-		self.rect.centerx = 6277
+		self.rect.centerx = 5121
 	
 	def update(self):
 		self.rect.centerx += self.speed	
@@ -1714,7 +1744,7 @@ class GoombaW1I(pygame.sprite.Sprite):
 
 	def reset(self):
 		self.rect.bottom = screen.get_height() - 95
-		self.rect.centerx = 1740
+		self.rect.centerx = 5121
 	
 	def update(self):
 		self.rect.centerx += self.speed	
@@ -1738,7 +1768,7 @@ class GoombaW1J(pygame.sprite.Sprite):
 
 	def reset(self):
 		self.rect.bottom = screen.get_height() - 95
-		self.rect.centerx = 2817
+		self.rect.centerx = 5121
 	
 	def update(self):
 		self.rect.centerx += self.speed	
@@ -1751,7 +1781,7 @@ class GoombaW1K(pygame.sprite.Sprite):
 		self.image = self.image.convert()
 		self.rect = self.image.get_rect()
 		self.dx = 10
-		self.speed = 1
+		self.speed = -1
 		self.reset()
 
 	def moveRight(self):
@@ -1762,7 +1792,7 @@ class GoombaW1K(pygame.sprite.Sprite):
 
 	def reset(self):
 		self.rect.bottom = screen.get_height() - 95
-		self.rect.centerx = 4302
+		self.rect.centerx = 5121
 	
 	def update(self):
 		self.rect.centerx += self.speed	
@@ -1786,7 +1816,7 @@ class GoombaW1L(pygame.sprite.Sprite):
 
 	def reset(self):
 		self.rect.bottom = screen.get_height() - 95
-		self.rect.centerx = 5387
+		self.rect.centerx = 5121
 	
 	def update(self):
 		self.rect.centerx += self.speed
@@ -1816,6 +1846,7 @@ def main():
 		pipew1E = PipeW1E()
 		pipew1F = PipeW1F()
 		pipew1G = PipeW1G()
+		pipew1H = PipeW1H()
 		qboxw1A = QboxW1A()
 		qboxw1B = QboxW1B()
 		qboxw1C = QboxW1C()
@@ -1880,20 +1911,23 @@ def main():
 		goombaW1F = GoombaW1F()
 		goombaW1G = GoombaW1G()
 		goombaW1H = GoombaW1H()
-		#goombaW1I = GoombaW1I()
-		#goombaW1J = GoombaW1J()
-		#goombaW1K = GoombaW1K()
-		#goombaW1L = GoombaW1L()
+		goombaW1I = GoombaW1I()
+		goombaW1J = GoombaW1J()
+		goombaW1K = GoombaW1K()
+		goombaW1L = GoombaW1L()
+		scoreboard = Scoreboard()
 
 		backgroundSprites = pygame.sprite.OrderedUpdates(level1B, level1A)
 		floorSprites = pygame.sprite.OrderedUpdates(floorw1A, floorw1B, floorw1C, floorw1D, floorw1E)
-		pipeSprites = pygame.sprite.OrderedUpdates(pipew1A, pipew1B, pipew1C, pipew1D, pipew1E, pipew1F, pipew1G)
+		pipeSprites = pygame.sprite.OrderedUpdates(pipew1A, pipew1B, pipew1C, pipew1D, pipew1E, pipew1F, pipew1G, pipew1H)
 		QboxSprites = pygame.sprite.OrderedUpdates(qboxw1A, qboxw1B, qboxw1C, qboxw1D, qboxw1E, qboxw1F, qboxw1G, qboxw1H, qboxw1I, qboxw1J, qboxw1K, qboxw1L, qboxw1M)
 		blockSprites = pygame.sprite.OrderedUpdates(blockw1A, blockw1B, blockw1C, blockw1D, blockw1E, blockw1F, blockw1G, blockw1H, blockw1I, blockw1J, blockw1K, blockw1L, blockw1M, blockw1N, blockw1O, blockw1P, blockw1Q, blockw1R, blockw1S, blockw1T, blockw1U, blockw1V, blockw1W, blockw1X, blockw1Y, blockw1Z, blockw1AA, blockw1AB, blockw1AC, blockw1AD)
 		starSprites = pygame.sprite.OrderedUpdates(starW1A, starW1B, starW1C, starW1D, starW1E, starW1F, starW1G, starW1H, starW1I, starW1J, starW1K, starW1L, starW1M)
-		badSprites = pygame.sprite.OrderedUpdates(goombaW1A, goombaW1B, goombaW1C, goombaW1D, goombaW1E, goombaW1F, goombaW1G, goombaW1H)
+		badSprites = pygame.sprite.Group(goombaW1A, goombaW1B, goombaW1C, goombaW1D, goombaW1E, goombaW1F, goombaW1G, goombaW1H, goombaW1I, goombaW1J, goombaW1K, goombaW1L)
 		playerSprites = pygame.sprite.OrderedUpdates(player)
+		scoreSprite = pygame.sprite.Group(scoreboard)
 
+		level1B.rect.left = (level1A.rect.right - 1)
 		
 		clock = pygame.time.Clock()
 		keepGoing = True
@@ -1911,27 +1945,40 @@ def main():
 					if event.key == pygame.K_UP:
 						player.jump()
 
-					
+				
 			if key[pygame.K_LEFT]:
 				player.turn = 0
 				player.image = pygame.image.load("walk L000.png")
 				if collideLeft == False:
 					if not level1A.rect.left == 0:
 						level1A.moveLeft()
+						level1B.moveLeft()
 						floorw1A.moveLeft()
 						floorw1B.moveLeft()
 						floorw1C.moveLeft()
+						floorw1D.moveLeft()
+						floorw1E.moveLeft()
 						pipew1A.moveLeft()
 						pipew1B.moveLeft()
 						pipew1C.moveLeft()
 						pipew1D.moveLeft()
+						pipew1E.moveLeft()
+						pipew1F.moveLeft()
 						pipew1G.moveLeft()
+						pipew1H.moveLeft()
 						qboxw1A.moveLeft()
 						qboxw1B.moveLeft()
 						qboxw1C.moveLeft()
 						qboxw1D.moveLeft()
 						qboxw1E.moveLeft()
 						qboxw1F.moveLeft()
+						qboxw1G.moveLeft()
+						qboxw1H.moveLeft()
+						qboxw1I.moveLeft()
+						qboxw1J.moveLeft()
+						qboxw1K.moveLeft()
+						qboxw1L.moveLeft()
+						qboxw1M.moveLeft()
 						blockw1A.moveLeft()
 						blockw1B.moveLeft()
 						blockw1C.moveLeft()
@@ -1951,12 +1998,30 @@ def main():
 						blockw1Q.moveLeft()
 						blockw1R.moveLeft()
 						blockw1S.moveLeft()
+						blockw1T.moveLeft()
+						blockw1U.moveLeft()
+						blockw1V.moveLeft()
+						blockw1W.moveLeft()
+						blockw1X.moveLeft()
+						blockw1Y.moveLeft()
+						blockw1Z.moveLeft()
+						blockw1AA.moveLeft()
+						blockw1AB.moveLeft()
+						blockw1AC.moveLeft()
+						blockw1AD.moveLeft()
 						starW1A.moveLeft()
 						starW1B.moveLeft()
 						starW1C.moveLeft()
 						starW1D.moveLeft()
 						starW1E.moveLeft()
 						starW1F.moveLeft()
+						starW1G.moveLeft()
+						starW1H.moveLeft()
+						starW1I.moveLeft()
+						starW1J.moveLeft()
+						starW1K.moveLeft()
+						starW1L.moveLeft()
+						starW1M.moveLeft()
 						goombaW1A.moveLeft()
 						goombaW1B.moveLeft()
 						goombaW1C.moveLeft()
@@ -1965,41 +2030,11 @@ def main():
 						goombaW1F.moveLeft()
 						goombaW1G.moveLeft()
 						goombaW1H.moveLeft()
-						if level1A.rect.right <= 1024:
-							level1B.moveLeft()
-							floorw1D.moveLeft()
-							floorw1E.moveLeft()
-							pipew1E.moveLeft()
-							pipew1F.moveLeft()
-							qboxw1G.moveLeft()
-							qboxw1H.moveLeft()
-							qboxw1I.moveLeft()
-							qboxw1J.moveLeft()
-							qboxw1K.moveLeft()
-							qboxw1L.moveLeft()
-							qboxw1M.moveLeft()
-							blockw1T.moveLeft()
-							blockw1U.moveLeft()
-							blockw1V.moveLeft()
-							blockw1W.moveLeft()
-							blockw1X.moveLeft()
-							blockw1Y.moveLeft()
-							blockw1Z.moveLeft()
-							blockw1AA.moveLeft()
-							blockw1AB.moveLeft()
-							blockw1AC.moveLeft()
-							blockw1AD.moveLeft()
-							starW1G.moveLeft()
-							starW1H.moveLeft()
-							starW1I.moveLeft()
-							starW1J.moveLeft()
-							starW1K.moveLeft()
-							starW1L.moveLeft()
-							starW1M.moveLeft()
-							#goombaW1I.moveLeft()
-							#goombaW1J.moveLeft()
-							#goombaW1K.moveLeft()
-							#goombaW1L.moveLeft()
+						goombaW1I.moveLeft()
+						goombaW1J.moveLeft()
+						goombaW1K.moveLeft()
+						goombaW1L.moveLeft()
+
 
 			if key[pygame.K_RIGHT]:
 				player.turn = 1
@@ -2007,20 +2042,33 @@ def main():
 				if collideRight == False:
 					if level1B.rect.right > 1024:
 						level1A.moveRight()
+						level1B.moveRight()
 						floorw1A.moveRight()
 						floorw1B.moveRight()
 						floorw1C.moveRight()
+						floorw1D.moveRight()
+						floorw1E.moveRight()
 						pipew1A.moveRight()
 						pipew1B.moveRight()
 						pipew1C.moveRight()
 						pipew1D.moveRight()
+						pipew1E.moveRight()
+						pipew1F.moveRight()
 						pipew1G.moveRight()
+						pipew1H.moveRight()
 						qboxw1A.moveRight()
 						qboxw1B.moveRight()
 						qboxw1C.moveRight()
 						qboxw1D.moveRight()
 						qboxw1E.moveRight()
 						qboxw1F.moveRight()
+						qboxw1G.moveRight()
+						qboxw1H.moveRight()
+						qboxw1I.moveRight()
+						qboxw1J.moveRight()
+						qboxw1K.moveRight()
+						qboxw1L.moveRight()
+						qboxw1M.moveRight()
 						blockw1A.moveRight()
 						blockw1B.moveRight()
 						blockw1C.moveRight()
@@ -2040,12 +2088,30 @@ def main():
 						blockw1Q.moveRight()
 						blockw1R.moveRight()
 						blockw1S.moveRight()
+						blockw1T.moveRight()
+						blockw1U.moveRight()
+						blockw1V.moveRight()
+						blockw1W.moveRight()
+						blockw1X.moveRight()
+						blockw1Y.moveRight()
+						blockw1Z.moveRight()
+						blockw1AA.moveRight()
+						blockw1AB.moveRight()
+						blockw1AC.moveRight()
+						blockw1AD.moveRight()
 						starW1A.moveRight()
 						starW1B.moveRight()
 						starW1C.moveRight()
 						starW1D.moveRight()
 						starW1E.moveRight()
 						starW1F.moveRight()
+						starW1G.moveRight()
+						starW1H.moveRight()
+						starW1I.moveRight()
+						starW1J.moveRight()
+						starW1K.moveRight()
+						starW1L.moveRight()
+						starW1M.moveRight()
 						goombaW1A.moveRight()
 						goombaW1B.moveRight()
 						goombaW1C.moveRight()
@@ -2054,41 +2120,11 @@ def main():
 						goombaW1F.moveRight()
 						goombaW1G.moveRight()
 						goombaW1H.moveRight()
-						if level1A.rect.right <= 1024:
-							level1B.moveRight()
-							floorw1D.moveRight()
-							floorw1E.moveRight()
-							pipew1E.moveRight()
-							pipew1F.moveRight()
-							qboxw1G.moveRight()
-							qboxw1H.moveRight()
-							qboxw1I.moveRight()
-							qboxw1J.moveRight()
-							qboxw1K.moveRight()
-							qboxw1L.moveRight()
-							qboxw1M.moveRight()
-							blockw1T.moveRight()
-							blockw1U.moveRight()
-							blockw1V.moveRight()
-							blockw1W.moveRight()
-							blockw1X.moveRight()
-							blockw1Y.moveRight()
-							blockw1Z.moveRight()
-							blockw1AA.moveRight()
-							blockw1AB.moveRight()
-							blockw1AC.moveRight()
-							blockw1AD.moveRight()
-							starW1G.moveRight()
-							starW1H.moveRight()
-							starW1I.moveRight()
-							starW1J.moveRight()
-							starW1K.moveRight()
-							starW1L.moveRight()
-							starW1M.moveRight()
-							#goombaW1I.moveRight()
-							#goombaW1J.moveRight()
-							#goombaW1K.moveRight()
-							#goombaW1L.moveRight()
+						goombaW1I.moveRight()
+						goombaW1J.moveRight()
+						goombaW1K.moveRight()
+						goombaW1L.moveRight()
+
 
 						
 			blockCollide = pygame.sprite.spritecollide(player, blockSprites, False)
@@ -2098,6 +2134,7 @@ def main():
 			starCollide = pygame.sprite.spritecollide(player, starSprites, True)
 			GpipeColide = pygame.sprite.groupcollide(badSprites, pipeSprites, False, False)
 			PgoombaColide = pygame.sprite.groupcollide(pipeSprites, badSprites, False, False)
+			killGoombaColide = pygame.sprite.spritecollide(player, badSprites, False)
 			
 			if blockCollide:	
 				for theBlock in blockCollide:
@@ -2125,7 +2162,7 @@ def main():
 				print (Thegoomba.rect.left)
 				print ("gooba right")
 				print (Thegoomba.rect.right)
-				print ("pipe life")
+				print ("pipe left")
 				print (Thepipe.rect.left)	
 				print ("pipe right")
 				print (Thepipe.rect.right)
@@ -2133,13 +2170,21 @@ def main():
 					Thegoomba.speed = -1
 				if (Thegoomba.rect.left + 1) == (Thepipe.rect.right):
 					Thegoomba.speed = 1
-					
-				
+		
+			if killGoombaColide:	
+				for theGoombak in killGoombaColide:
+					print("player Y")
+					print (player.rect.bottom)
+					print("goomba Y")
+					print (theGoombak.rect.top)
+					if theGoombak.rect.top == player.rect.bottom:
+						print ("goomba die")
+						theGoombak.kill()
 				
 			ScoreMessage = "Your Score is: "
 			
 			if starCollide:
-				score += 100
+				scoreboard.score += 100
 				print (ScoreMessage, score)
 		
 		
@@ -2147,6 +2192,7 @@ def main():
 			
 			playerSprites.update()
 			badSprites.update()
+			scoreSprite.update()
 			backgroundSprites.update()
 			floorSprites.update()
 			pipeSprites.update()
@@ -2160,6 +2206,7 @@ def main():
 			blockSprites.draw(screen)
 			starSprites.draw(screen)
 			floorSprites.draw(screen)
+			scoreSprite.draw(screen)
 			badSprites.draw(screen)
 			playerSprites.draw(screen)
 
