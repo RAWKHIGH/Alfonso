@@ -4,6 +4,7 @@
 
 import pygame, random
 from pygame import *
+from pygame.sprite import *
 
 pygame.init()
 
@@ -35,9 +36,10 @@ class Alfonso(pygame.sprite.Sprite):
 		self.image = self.image.convert()
 		self.rect = self.image.get_rect()
 		self.turn = 1
-		self.rect.bottom = 577
+		self.rect.bottom = 320
 		self.jump_ready = False
 		self.floor = 513
+		self.mask = pygame.mask.from_surface(self.image)
 		
 		self.imgList = []
 		self.loadPics()
@@ -104,7 +106,9 @@ class Alfonso(pygame.sprite.Sprite):
 	def jump(self):
 		self.jump_ready = True
 		self.frame_since_jump = 0	
-		
+	
+	def reset(self):
+		self.rect.bottom = 320
 	
 class World1A(pygame.sprite.Sprite):
 	def __init__(self):
@@ -125,6 +129,7 @@ class World1A(pygame.sprite.Sprite):
 
 	def reset(self):
 		self.rect.bottom = screen.get_height()
+		self.rect.left = 0
 
 class World1B(pygame.sprite.Sprite):
 	def __init__(self):
@@ -145,6 +150,7 @@ class World1B(pygame.sprite.Sprite):
 
 	def reset(self):
 		self.rect.bottom = screen.get_height()
+		self.rect.left = 6658
 
 class Scoreboard(pygame.sprite.Sprite):
     def __init__(self):
@@ -159,14 +165,16 @@ class Scoreboard(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
 		
 class Star(pygame.sprite.Sprite):
-	def __init__(self):
+	def __init__(self, x, y):
 		pygame.sprite.Sprite.__init__(self)
 		self.image = pygame.image.load("star.png")
 		self.image.set_colorkey(white)
 		self.image = self.image.convert()
 		self.rect = self.image.get_rect()
+		self.x = x
+		self.y = y
 		self.dx = 10
-#		self.reset()
+		self.reset()
 
 	def moveRight(self):
 		self.rect.left -= self.dx
@@ -174,9 +182,9 @@ class Star(pygame.sprite.Sprite):
 	def moveLeft(self):
 		self.rect.left += self.dx
 
-#	def reset(self):
-#		self.rect.top = 270
-#		self.rect.left = 10901
+	def reset(self):
+		self.rect.x = self.x
+		self.rect.y = self.y
 		
 class Goomba(pygame.sprite.Sprite):
 	def __init__(self, centerx):
@@ -188,6 +196,7 @@ class Goomba(pygame.sprite.Sprite):
 		self.dx = 10
 		self.calcMove()
 		self.centerx = centerx
+		self.mask = pygame.mask.from_surface(self.image)
 		self.reset()
 	
 	def calcMove(self):
@@ -211,14 +220,17 @@ class Goomba(pygame.sprite.Sprite):
 		self.rect.centerx += self.speed
 		
 class Block(pygame.sprite.Sprite):
-	def __init__(self):
+	def __init__(self, x, y):
 		pygame.sprite.Sprite.__init__(self)
 		self.image = pygame.image.load("block.png")
 		self.image.set_colorkey(white)
 		self.image = self.image.convert()
 		self.rect = self.image.get_rect()
+		self.x = x
+		self.y = y
 		self.dx = 10
-		#self.reset()
+		self.mask = pygame.mask.from_surface(self.image)
+		self.reset()
 
 	def moveRight(self):
 		self.rect.left -= self.dx
@@ -226,19 +238,22 @@ class Block(pygame.sprite.Sprite):
 	def moveLeft(self):
 		self.rect.left += self.dx
 
-	#def reset(self):
-		#self.rect.top = 320
-		#self.rect.left = 1278
+	def reset(self):
+		self.rect.x = self.x
+		self.rect.y = self.y
 		
 class Qbox(pygame.sprite.Sprite):
-	def __init__(self):
+	def __init__(self, x, y):
 		pygame.sprite.Sprite.__init__(self)
 		self.image = pygame.image.load("Q_box.png")
 		self.image.set_colorkey(white)
 		self.image = self.image.convert()
 		self.rect = self.image.get_rect()
+		self.x = x
+		self.y = y
 		self.dx = 10
-#		self.reset()
+		self.mask = pygame.mask.from_surface(self.image)
+		self.reset()
 
 	def moveRight(self):
 		self.rect.left -= self.dx
@@ -246,16 +261,38 @@ class Qbox(pygame.sprite.Sprite):
 	def moveLeft(self):
 		self.rect.left += self.dx
 
-#	def reset(self):
-#		self.rect.top = 320
-#		self.rect.left = 1023	
+	def reset(self):
+		self.rect.x = self.x
+		self.rect.y = self.y	
 		
-def intro():
+def startScreen(score):
 	screen = pygame.display.set_mode((1024, 672))
 	pygame.display.set_caption("Cousin Alfonso Start Screen")
+ 
+	keepGoing = True
+	clock = pygame.time.Clock()
+	pygame.mouse.set_visible(True)
+	while keepGoing:
+		clock.tick(30)
+		for event in pygame.event.get():
+			if event.type == pygame.QUIT:
+				keepGoing = False
+				donePlaying = True
+			if event.type == pygame.MOUSEBUTTONDOWN:
+				keepGoing = False
+				donePlaying = False
+			elif event.type == pygame.KEYDOWN:
+				if event.key == pygame.K_ESCAPE:
+					keepGoing = False
+					donePlaying = True
+
+		pygame.display.flip()
+  
+	pygame.mouse.set_visible(True)
+	return donePlaying
 
 		
-def main():
+def level_1():
 		screen = pygame.display.set_mode((1024, 672))
 		pygame.display.set_caption("Super Mario Bros. Cousin Alfonso")
 
@@ -274,80 +311,36 @@ def main():
 		qboxs = []
 		
 		scoreboard = Scoreboard()
+      
+   
 		
-		for goomba in range(50):
+		for goomba in range(100):
 			goombax = random.randint(level1A.rect.left, level1B.rect.right)
 			goombas.append(Goomba(goombax))	
-			
-		for block in range(30):
-			blocks.append(Block())
-			
-		for qbox in range(30):
-			qboxs.append(Qbox())
-			
-		for star in range(30):
-			stars.append(Star())
 		
-		blocks[0].x = 1278
-		blocks[0].y = 320
-		blocks[1].x = 1406
-		blocks[1].y = 320
-		blocks[2].x = 1534
-		blocks[2].y = 320
-		blocks[3].x = 4927
-		blocks[3].y = 320
-		blocks[4].x = 5056
-		blocks[4].y = 320
-		blocks[5].x = 5120
-		blocks[5].y = 63
-		blocks[6].x = 5184
-		blocks[6].y = 63
-		blocks[7].x = 5248
-		blocks[7].y = 63
-		blocks[8].x = 5312
-		blocks[8].y = 63
-		blocks[9].x = 5376
-		blocks[9].y = 63
-		blocks[10].x = 5440
-		blocks[10].y = 63
-		blocks[11].x = 5504
-		blocks[11].y = 63
-		blocks[12].x = 5568
-		blocks[12].y = 63
-		blocks[13].x = 5824
-		blocks[13].y = 63
-		blocks[14].x = 5888
-		blocks[14].y = 63
-		blocks[15].x = 5952
-		blocks[15].y = 63
-		blocks[16].x = 6016
-		blocks[16].y = 320
-		blocks[17].x = 6400
-		blocks[17].y = 320
-		blocks[18].x = 6464
-		blocks[18].y = 320
-		blocks[19].x = 7556
-		blocks[19].y = 320
-		blocks[20].x = 7747
-		blocks[20].y = 63
-		blocks[21].x = 7811
-		blocks[21].y = 63
-		blocks[22].x = 7875
-		blocks[22].y = 63
-		blocks[23].x = 8196
-		blocks[23].y = 63
-		blocks[24].x = 8387
-		blocks[24].y = 63
-		blocks[25].x = 8260
-		blocks[25].y = 320
-		blocks[26].x = 8324
-		blocks[26].y = 320
-		blocks[27].x = 10755
-		blocks[27].y = 320
-		blocks[28].x = 10819
-		blocks[28].y = 320
-		blocks[29].x = 10948
-		blocks[29].y = 320
+		BLpos = 0
+		for block in range(44):
+		    # XY POS   0     1     2     3     4     5     6     7     8     9     10    11    12    13    14    15    16    17    18    19    20    21    22    23    24    25    26     27     28     29   30    31   32    33    34    35    36    37    38    39     40     41     42     43 
+			blockx = [1278, 1406, 1534, 4927, 5056, 5120, 5184, 5248, 5312, 5376, 5440, 5504, 5568, 5824, 5888, 5952, 6016, 6400, 6464, 7556, 7747, 7811, 7875, 8196, 8387, 8260, 8324, 10755, 10819, 10948, 450, 844, 2176, 2692, 3104, 3902, 4168, 9190, 9394, 9955, 10586, 11230, 11575, 12130]
+			blocky = [ 320,  320,  320,  320,  320,   63,   63,   63,   63,   63,   63,   63,   63,   63,   63,   63,  320,  320,  320,  320,   63,   63,   63,   63,   63,  320,  320,   320,   320,   320, 320,  63,  320,  320,   63,  320,   63,  320,   63,   63,   320,    63,    63,    63]
+			blocks.append(Block(blockx[BLpos], blocky[BLpos]))
+			BLpos += 1
+			
+		QLpos = 0
+		for qbox in range(13):
+			# XY POS  0     1     2     3     4     5     6     7     8     9     10    11    12
+			qboxx = [1023, 1342, 1471, 1406, 4991, 6016, 6787, 6979, 7171, 6979, 8260, 8324, 10884]
+			qboxy = [ 320,  320,  320,   63,  320,   63,  320,  320,  320,   63,   63,   63,   320]
+			qboxs.append(Qbox(qboxx[QLpos], qboxy[QLpos]))
+			QLpos += 1
+		
+		SLpos = 0
+		for star in range(13):
+			# XY POS  0     1     2     3     4     5     6     7     8     9     10    11    12
+			starx = [1040, 1359, 1488, 1423, 5008, 6033, 6804, 6996, 7188, 6996, 8277, 8341, 10901]
+			stary = [ 270,  270,  270,   13,  270,   13,  270,  270,  270,   13,   13,   13,   270]
+			stars.append(Star(starx[SLpos], stary[SLpos]))
+			SLpos += 1
 			
 		backgroundSprites = pygame.sprite.OrderedUpdates(level1B, level1A)
 		QboxSprites = pygame.sprite.OrderedUpdates(qboxs)
@@ -357,7 +350,7 @@ def main():
 		playerSprites = pygame.sprite.OrderedUpdates(player)
 		scoreSprite = pygame.sprite.Group(scoreboard)
 
-		level1B.rect.left = (level1A.rect.right - 1)
+		level1B.rect.left = (level1A.rect.right)
 		
 		clock = pygame.time.Clock()
 		keepGoing = True
@@ -383,13 +376,13 @@ def main():
 					if not level1A.rect.left == 0:
 						level1A.moveLeft()
 						level1B.moveLeft()
-						for index in range(30):
+						for index in range(13):
 							stars[index].moveLeft()
-						for index in range(50):
+						for index in range(100):
 							goombas[index].moveLeft()
-						for index in range(30):
+						for index in range(44):
 							blocks[index].moveLeft()
-						for index in range(30):
+						for index in range(13):
 							qboxs[index].moveLeft()
 
 
@@ -400,41 +393,61 @@ def main():
 					if level1B.rect.right > 1024:
 						level1A.moveRight()
 						level1B.moveRight()
-						for index in range(30):
+						for index in range(13):
 							stars[index].moveRight()
-						for index in range(50):
+						for index in range(100):
 							goombas[index].moveRight()
-						for index in range(30):
+						for index in range(44):
 							blocks[index].moveRight()
-						for index in range(30):
+						for index in range(13):
 							qboxs[index].moveRight()
 
 
 						
-			blockCollide = pygame.sprite.spritecollide(player, blockSprites, False)
-			qboxCollide = pygame.sprite.spritecollide(player, QboxSprites, False)	
-			starCollide = pygame.sprite.spritecollide(player, starSprites, True)
+			blockCollide = pygame.sprite.spritecollide(player, blockSprites, False, pygame.sprite.collide_mask)
+			qboxCollide = pygame.sprite.spritecollide(player, QboxSprites, False, pygame.sprite.collide_mask)	
+			starCollide = pygame.sprite.spritecollide(player, starSprites, True, pygame.sprite.collide_mask)
+			goombaCollide = pygame.sprite.spritecollide(player, badSprites, False, pygame.sprite.collide_mask)
 			
 			if blockCollide:	
 				for theBlock in blockCollide:
-					if player.rect.bottom == (theBlock.rect.top + 1):
+					if collide_mask(player, theBlock):
 						player.floor = (theBlock.rect.top - 64)
 			elif qboxCollide:	
 				for theQbox in qboxCollide:
-					if player.rect.bottom == (theQbox.rect.top + 1):
+					if collide_mask(player, theQbox):
 						player.floor = (theQbox.rect.top - 64)
 			else:
 				player.floor = 513
 			
 			if starCollide:
 				scoreboard.score += 100
+
 			
 			for goomba in goombas:
 				if goomba.rect.left >= level1A.rect.left:
 					goomba.speed *= -1
 				if goomba.rect.left <= level1B.rect.right:
 					goomba.speed *= -1
-		
+					
+			if goombaCollide:	
+				for theGoomba in goombaCollide:
+					if collide_mask(player, theGoomba):
+						print ("dead")
+						scoreboard.score = 0
+						scoreboard.lives -= 1
+						for index in range(13):
+							stars[index].reset()
+						for index in range(100):
+							goombas[index].reset()
+						for index in range(44):
+							blocks[index].reset()
+						for index in range(13):
+							qboxs[index].reset()
+						player.reset()
+						level1A.reset()
+						level1B.reset()
+			
 		
 			player.calc_grav()
 			
@@ -459,5 +472,13 @@ def main():
 
 		pygame.mouse.set_visible(True)
 
+def main():
+	donePlaying = False
+	score = 0
+	while not donePlaying:
+		donePlaying = startScreen(score)
+		if not donePlaying:
+			score = level_1()
+			#donePlaying = gameOver(score)
 if __name__ == "__main__":
-	main()
+    main()
