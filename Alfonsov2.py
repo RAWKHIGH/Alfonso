@@ -31,6 +31,7 @@ class Alfonso(pygame.sprite.Sprite):
 		self.image = self.image.convert()
 		self.rect = self.image.get_rect()
 		self.turn = 1
+		self.dx = 10
 		self.rect.bottom = 320
 		self.jump_ready = False
 		self.floor = 513
@@ -101,6 +102,8 @@ class Alfonso(pygame.sprite.Sprite):
 			#	elif self.turn == 0:
 			#		self.image = pygame.image.load("jump L000.png")	
 		
+	def moveRight(self):
+		self.rect.left -= self.dx
 		
 	def calc_grav(self):
 		self.change_y += .50
@@ -405,7 +408,8 @@ def level_1():
 	score = 0
 	counter = 0
 	time = 180
-		
+	flagcounter = 0
+	
 	player = Alfonso()
 	level1A = World1A()
 	level1B = World1B()
@@ -414,10 +418,10 @@ def level_1():
 	goombas = []
 	blocks = []
 	qboxs = []
-		
-	scoreboard = Scoreboard()      
-   
-		
+	
+	scoreboard = Scoreboard() 
+	flagFloor = player.rect.y
+   	
 	for goomba in range(100):
 		goombax = random.randint(level1A.rect.left, (level1B.rect.right - 1278))
 		goombas.append(Goomba(goombax))	
@@ -457,26 +461,29 @@ def level_1():
 
 	level1B.rect.left = (level1A.rect.right)
 		
+	collideFlag = False
+	Level_Finish_1 = False
+		
 	clock = pygame.time.Clock()
 	keepGoing = True
 	while keepGoing:
 		clock.tick(30)
 		key = pygame.key.get_pressed()
 		jumping = False
-		collideLeft = False
-		collideRight = False
+		
 		pygame.mouse.set_visible(False)
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
 				keepGoing = False
 			if event.type == pygame.KEYDOWN:
 				if event.key == pygame.K_UP:
-					player.jump()
+					if collideFlag == False:
+						player.jump()
 
 				
 		if key[pygame.K_LEFT]:
 			player.turn = 0
-			if collideLeft == False:
+			if collideFlag == False:
 				if not level1A.rect.left == 0:
 					player.moving = True
 					level1A.moveLeft()
@@ -493,7 +500,7 @@ def level_1():
 
 		if key[pygame.K_RIGHT]:
 			player.turn = 1
-			if collideRight == False:
+			if collideFlag == False:
 				if level1B.rect.right > 1024:
 					player.moving = True
 					level1A.moveRight()
@@ -531,8 +538,24 @@ def level_1():
 			scoreboard.score += 100
 			
 		if 	flagCollide:
-			print("Finished Level 1")
-			
+			player.floor = flagFloor
+			collideFlag = True
+			Level_Finish_1 = True
+			flagcounter = flagcounter + 1
+
+		if Level_Finish_1 == True:
+			if flagcounter == 1:
+				flagFloor = flagFloor + 1
+				flagcounter = 0
+				if player.rect.bottom >= 577:
+					flagFloor = 513
+					print(flagFloor)
+					print(player.rect.bottom)
+					player.moveRight()
+					if player.rect.left >= 600:
+						print("Hit Castle")
+					
+		
 		for goomba in goombas:
 			if goomba.rect.left >= level1A.rect.left:
 				goomba.speed *= -1
@@ -557,8 +580,7 @@ def level_1():
 					level1A.reset()
 					level1B.reset()
 					flag.reset()
-			
-						
+							
 		counter = counter + 1
 		if counter == 30:
 			time -= 1
