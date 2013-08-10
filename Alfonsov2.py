@@ -58,7 +58,7 @@ class Alfonso(pygame.sprite.Sprite):
 
 	def changespeed_x(self,x):
 		self.change_x = x
- 
+
 	def changespeed_y(self,y):
 		self.change_y = y
 
@@ -113,7 +113,7 @@ class Alfonso(pygame.sprite.Sprite):
 			self.change_y = 0
 			self.rect.y = self.floor
 			self.frame_since_collision = 0
- 
+
 	# Called when user hits 'jump' button
 	def jump(self):
 		self.jump_ready = True
@@ -368,7 +368,7 @@ class Qbox(pygame.sprite.Sprite):
 		
 def splashScreen():
 	screen = pygame.display.set_mode((1024, 672))
-	pygame.display.set_caption("Cousin Alfonso Start Screen")
+	pygame.display.set_caption("Super Mario Bros. Cousin Alfonso")
 	
 	splash_image = pygame.image.load("SMBCA Splash Screen.png").convert()
 	screen.blit(splash_image, [128 , 0])
@@ -388,7 +388,7 @@ def splashScreen():
 		counter = counter + 1
 		if counter == 60:
 			print("Switching")
-			currentScreen = level_1()
+			currentScreen = instructionScreen()
 				
 					
 		pygame.display.flip()
@@ -396,7 +396,57 @@ def splashScreen():
 	pygame.mouse.set_visible(True)
 	return donePlaying
 
-		
+def instructionScreen():
+	screen = pygame.display.set_mode((1024, 672))
+	pygame.display.set_caption("Super Mario Bros. Cousin Alfonso")
+	
+	instruction_image = pygame.image.load("instructions.png").convert()
+	screen.blit(instruction_image, [0 , 0])
+	keepGoing = True
+	clock = pygame.time.Clock()
+	pygame.mouse.set_visible(True)
+	while keepGoing:
+		clock.tick(30)
+		for event in pygame.event.get():
+			if event.type == pygame.QUIT:
+				sys.exit()
+			if event.type == pygame.MOUSEBUTTONDOWN:
+				print ("Switching")
+				currentScreen = helpScreen_lv1()
+			elif event.type == pygame.KEYDOWN:
+				if event.key == pygame.K_ESCAPE:
+					sys.exit()				
+					
+		pygame.display.flip()
+	
+	pygame.mouse.set_visible(True)
+	return donePlaying
+
+def helpScreen_lv1():
+	screen = pygame.display.set_mode((1024, 672))
+	pygame.display.set_caption("Super Mario Bros. Cousin Alfonso")
+	helpScreen_image = pygame.image.load("helpScreen.png").convert()
+	screen.blit(helpScreen_image, [0 , 0])
+	keepGoing = True
+	clock = pygame.time.Clock()
+	pygame.mouse.set_visible(True)
+	while keepGoing:
+		clock.tick(30)
+		for event in pygame.event.get():
+			if event.type == pygame.QUIT:
+				sys.exit()
+			if event.type == pygame.MOUSEBUTTONDOWN:
+				print ("Switching")
+				currentScreen = level_1()
+			elif event.type == pygame.KEYDOWN:
+				if event.key == pygame.K_ESCAPE:
+					sys.exit()
+					
+		pygame.display.flip()
+	
+	pygame.mouse.set_visible(True)
+	return donePlaying
+	
 def level_1():
 	screen = pygame.display.set_mode((1024, 672))
 	pygame.display.set_caption("Super Mario Bros. Cousin Alfonso")
@@ -421,14 +471,14 @@ def level_1():
 	
 	scoreboard = Scoreboard() 
 	flagFloor = player.rect.y
-   	
+
 	for goomba in range(100):
 		goombax = random.randint(level1A.rect.left, (level1B.rect.right - 1278))
 		goombas.append(Goomba(goombax))	
 		
 	BLpos = 0
 	for block in range(44):
-	    # XY POS   0     1     2     3     4     5     6     7     8     9     10    11    12    13    14    15    16    17    18    19    20    21    22    23    24    25    26     27     28     29   30    31   32    33    34    35    36    37    38    39     40     41     42     43 
+		# XY POS   0     1     2     3     4     5     6     7     8     9     10    11    12    13    14    15    16    17    18    19    20    21    22    23    24    25    26     27     28     29   30    31   32    33    34    35    36    37    38    39     40     41     42     43 
 		blockx = [1278, 1406, 1534, 4927, 5056, 5120, 5184, 5248, 5312, 5376, 5440, 5504, 5568, 5824, 5888, 5952, 6016, 6400, 6464, 7556, 7747, 7811, 7875, 8196, 8387, 8260, 8324, 10755, 10819, 10948, 450, 844, 2176, 2692, 3104, 3902, 4168, 9190, 9394, 9955, 10586, 11230, 11575, 12130]
 		blocky = [ 320,  320,  320,  320,  320,   63,   63,   63,   63,   63,   63,   63,   63,   63,   63,   63,  320,  320,  320,  320,   63,   63,   63,   63,   63,  320,  320,   320,   320,   320, 320,  63,  320,  320,   63,  320,   63,  320,   63,   63,   320,    63,    63,    63]
 		blocks.append(Block(blockx[BLpos], blocky[BLpos]))
@@ -580,7 +630,7 @@ def level_1():
 					level1A.reset()
 					level1B.reset()
 					flag.reset()
-							
+	
 		counter = counter + 1
 		if counter == 30:
 			time -= 1
