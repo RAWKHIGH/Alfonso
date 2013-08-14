@@ -15,6 +15,8 @@ red      = (255,  0,  0)
 
 screen = pygame.display.set_mode((1024, 672))
 
+globalScore = 0
+
 class Alfonso(pygame.sprite.Sprite):
 
 	change_x = 0
@@ -22,6 +24,7 @@ class Alfonso(pygame.sprite.Sprite):
 
 	frame_since_collision = 0
 	frame_since_jump = 0
+	
 	
 	
 	def __init__(self):
@@ -343,6 +346,29 @@ class Block(pygame.sprite.Sprite):
 		self.rect.x = self.x
 		self.rect.y = self.y
 		
+class GrassTop(pygame.sprite.Sprite):
+	def __init__(self, x, y):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("grassTop.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.x = x
+		self.y = y
+		self.dx = 10
+		self.mask = pygame.mask.from_surface(self.image)
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.x = self.x
+		self.rect.y = self.y
+		
 class Qbox(pygame.sprite.Sprite):
 	def __init__(self, x, y):
 		pygame.sprite.Sprite.__init__(self)
@@ -365,6 +391,48 @@ class Qbox(pygame.sprite.Sprite):
 	def reset(self):
 		self.rect.x = self.x
 		self.rect.y = self.y	
+		
+class GroundW2A(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("groundW2A.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.mask = pygame.mask.from_surface(self.image)
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.x = 0
+		self.rect.y = screen.get_height() - 94
+		
+class GroundW2B(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("groundW2A.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.mask = pygame.mask.from_surface(self.image)
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.x = 8221
+		self.rect.y = screen.get_height() - 96
 		
 def splashScreen():
 	screen = pygame.display.set_mode((1024, 672))
@@ -455,7 +523,6 @@ def level_1():
 	background.fill((0, 0, 0))
 	screen.blit(background, (0, 0))
 
-	score = 0
 	counter = 0
 	time = 180
 	flagcounter = 0
@@ -471,6 +538,7 @@ def level_1():
 	
 	scoreboard = Scoreboard() 
 	flagFloor = player.rect.y
+	flag.rect.x = 12642
 
 	for goomba in range(100):
 		goombax = random.randint(level1A.rect.left, (level1B.rect.right - 1278))
@@ -513,6 +581,7 @@ def level_1():
 		
 	collideFlag = False
 	Level_Finish_1 = False
+	timer = True
 		
 	clock = pygame.time.Clock()
 	keepGoing = True
@@ -520,7 +589,6 @@ def level_1():
 		clock.tick(30)
 		key = pygame.key.get_pressed()
 		jumping = False
-		
 		pygame.mouse.set_visible(False)
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
@@ -597,14 +665,20 @@ def level_1():
 			if flagcounter == 1:
 				flagFloor = flagFloor + 1
 				flagcounter = 0
+				timer = False
+				if scoreboard.time != 0:
+					scoreboard.time -= 1
 				if player.rect.bottom >= 577:
 					flagFloor = 513
-					print(flagFloor)
-					print(player.rect.bottom)
-					player.moveRight()
-					if player.rect.left >= 600:
-						print("Hit Castle")
+					if scoreboard.time == 0:
+						print ("Switching")
+						globalScore = scoreboard.score
+						currentScreen = level_2()
 					
+		if timer == False:
+			timeMoney = scoreboard.time
+			timeMoney *= 10
+			scoreboard.score = scoreboard.score + timeMoney
 		
 		for goomba in goombas:
 			if goomba.rect.left >= level1A.rect.left:
@@ -631,8 +705,9 @@ def level_1():
 					level1B.reset()
 					flag.reset()
 	
-		counter = counter + 1
-		if counter == 30:
+		if timer == True:
+			counter = counter + 1
+		if timer == True and counter == 30:
 			time -= 1
 			counter = 0
 			scoreboard.time = time
@@ -669,21 +744,40 @@ def level_2():
 	background = pygame.Surface(screen.get_size())
 	background.fill((0, 0, 0))
 	screen.blit(background, (0, 0))
-	
-	score = 0
+
 	counter = 0
 	time = 180
 	
 	player = Alfonso()
 	level2A = World2A()
 	level2B = World2B()
-	scoreboard = Scoreboard()      
+	scoreboard = Scoreboard()
+	grassTop = []
+	flag = Flag()
+	groundW2A = GroundW2A()
+	
+	flagFloor = player.rect.y
+	scoreboard.score = globalScore	
+	flag.rect.x = 9664
+	
+	GTLpos = 0
+	for grastop in range(13):
+		# XY POS        0     1     2     3     4     5     6     7     8     9     10    11    12
+		grassTopx = [ 1129, 1675, 1999, 2251, 3180, 3821, 3788, 4172, 4431, 6221, 7147, 7372, 7759]
+		grassTopy = [  505,   59,  505,  257,  569,   59,  569,  569,  318,  441,  569,  318,  318]
+		grassTop.append(GrassTop(grassTopx[GTLpos], grassTopy[GTLpos]))
+		GTLpos += 1
 	
 	backgroundSprites = pygame.sprite.OrderedUpdates(level2B, level2A)
+	grassSprites = pygame.sprite.OrderedUpdates(grassTop)
 	playerSprites = pygame.sprite.OrderedUpdates(player)
 	scoreSprite = pygame.sprite.Group(scoreboard)
+	flagSprites = pygame.sprite.OrderedUpdates(flag)
+	groundSprites = pygame.sprite.OrderedUpdates(groundW2A)
 
 	level2B.rect.left = (level2A.rect.right)
+		
+	collideFlag = False
 	
 	clock = pygame.time.Clock()
 	keepGoing = True
@@ -693,6 +787,9 @@ def level_2():
 		jumping = False
 		collideLeft = False
 		collideRight = False
+		player.floor = 672
+		print (flag.rect.x)
+		print (flag.rect.y)
 		pygame.mouse.set_visible(False)
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
@@ -704,20 +801,50 @@ def level_2():
 				
 		if key[pygame.K_LEFT]:
 			player.turn = 0
-			player.image = pygame.image.load("walk L000.png")
-			if collideLeft == False:
+			if collideFlag == False:
 				if not level2A.rect.left == 0:
+					player.moving = True
 					level2A.moveLeft()
 					level2B.moveLeft()
+					flag.moveLeft()
+					groundW2A.moveLeft()
+					for index in range(13):
+						grassTop[index].moveLeft()
+
 
 		if key[pygame.K_RIGHT]:
 			player.turn = 1
-			player.image = pygame.image.load("walk R000.png")
-			if collideRight == False:
+			if collideFlag == False:
 				if level2B.rect.right > 1024:
+					player.moving = True
 					level2A.moveRight()
-					level2B.moveRight()			
+					level2B.moveRight()
+					flag.moveRight()
+					groundW2A.moveRight()
+					for index in range(13):
+						grassTop[index].moveRight()
 						
+		flagCollide = pygame.sprite.spritecollide(player, flagSprites, False, pygame.sprite.collide_mask)
+		groundCollide = pygame.sprite.spritecollide(player, groundSprites, False, pygame.sprite.collide_mask)
+		grassCollide = pygame.sprite.spritecollide(player, grassSprites, False, pygame.sprite.collide_mask)
+		
+		if 	flagCollide:
+			player.floor = flagFloor
+			collideFlag = True
+			Level_Finish_1 = True
+			flagcounter = flagcounter + 1
+			
+		if groundCollide:	
+			for theGround in groundCollide:
+				if collide_mask(player, theGround):
+					player.floor = (theGround.rect.top - 64)
+					
+		if grassCollide:	
+			for theGrass in grassCollide:
+				if collide_mask(player, theGrass):
+					player.floor = (theGrass.rect.top - 64)
+			
+			
 		counter = counter + 1
 		if counter == 30:
 			time -= 1
@@ -727,10 +854,16 @@ def level_2():
 		player.calc_grav()
 			
 		playerSprites.update()
+		grassSprites.update()
 		scoreSprite.update()
 		backgroundSprites.update()
+		flagSprites.update()
+		groundSprites.update()
 
 		backgroundSprites.draw(screen)
+		grassSprites.draw(screen)
+		flagSprites.draw(screen)
+		groundSprites.draw(screen)
 		scoreSprite.draw(screen)
 		playerSprites.draw(screen)
 
