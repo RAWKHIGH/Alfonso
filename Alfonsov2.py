@@ -288,7 +288,7 @@ class Flag(pygame.sprite.Sprite):
 
 	def reset(self):
 		self.rect.x = 12642
-		self.rect.y = 0
+		self.rect.y = 96
 		
 class Goomba(pygame.sprite.Sprite):
 	def __init__(self, centerx):
@@ -592,7 +592,7 @@ def level_1():
 	for block in range(44):
 		# XY POS   0     1     2     3     4     5     6     7     8     9     10    11    12    13    14    15    16    17    18    19    20    21    22    23    24    25    26     27     28     29   30    31   32    33    34    35    36    37    38    39     40     41     42     43 
 		blockx = [1278, 1406, 1534, 4927, 5056, 5120, 5184, 5248, 5312, 5376, 5440, 5504, 5568, 5824, 5888, 5952, 6016, 6400, 6464, 7556, 7747, 7811, 7875, 8196, 8387, 8260, 8324, 10755, 10819, 10948, 450, 844, 2176, 2692, 3104, 3902, 4168, 9190, 9394, 9955, 10586, 11230, 11575, 12130]
-		blocky = [ 320,  320,  320,  320,  320,   63,   63,   63,   63,   63,   63,   63,   63,   63,   63,   63,  320,  320,  320,  320,   63,   63,   63,   63,   63,  320,  320,   320,   320,   320, 320,  63,  320,  320,   63,  320,   63,  320,   63,   63,   320,    63,    63,    63]
+		blocky = [ 416,  416,  416,  416,  416,  159,  159,  159,  159,  159,  159,  159,  159,  159,  159,  159,  416,  416,  416,  416,  159,  159,  159,  159,  159,  416,  416,   416,   416,   416, 416, 159,  416,  416,  159,  416,  159,  416,  159,  159,   416,   159,   159,   159]
 		blocks.append(Block(blockx[BLpos], blocky[BLpos]))
 		BLpos += 1
 			
@@ -600,7 +600,7 @@ def level_1():
 	for qbox in range(13):
 		# XY POS  0     1     2     3     4     5     6     7     8     9     10    11    12
 		qboxx = [1023, 1342, 1471, 1406, 4991, 6016, 6787, 6979, 7171, 6979, 8260, 8324, 10884]
-		qboxy = [ 320,  320,  320,   63,  320,   63,  320,  320,  320,   63,   63,   63,   320]
+		qboxy = [ 416,  416,  416,  159,  416,  159,  416,  416,  416,  159,  159,  159,   416]
 		qboxs.append(Qbox(qboxx[QLpos], qboxy[QLpos]))
 		QLpos += 1
 		
@@ -608,7 +608,7 @@ def level_1():
 	for star in range(13):
 		# XY POS  0     1     2     3     4     5     6     7     8     9     10    11    12
 		starx = [1040, 1359, 1488, 1423, 5008, 6033, 6804, 6996, 7188, 6996, 8277, 8341, 10901]
-		stary = [ 270,  270,  270,   13,  270,   13,  270,  270,  270,   13,   13,   13,   270]
+		stary = [ 366,  366,  366,  109,  366,  109,  366,  366,  366,  109,  109,  109,   366]
 		stars.append(Star(starx[SLpos], stary[SLpos]))
 		SLpos += 1
 			
@@ -693,7 +693,7 @@ def level_1():
 				if collide_mask(player, theQbox):
 					player.floor = (theQbox.rect.top - 64)
 		else:
-			player.floor = 513
+			player.floor = screen.get_height() - 95
 		
 		if starCollide:
 			scoreboard.score += 100
@@ -780,7 +780,8 @@ def level_1():
 	pygame.mouse.set_visible(True)
 
 def level_2(scoreboard):
-	screen = pygame.display.set_mode((1024, 768), pygame.FULLSCREEN)
+	screen = pygame.display.set_mode((1024, 768))
+	#, pygame.FULLSCREEN
 	pygame.display.set_caption("Super Mario Bros. Cousin Alfonso")
 
 	background = pygame.Surface(screen.get_size())
@@ -789,11 +790,11 @@ def level_2(scoreboard):
 
 	counter = 0
 	time = 180
+	flagcounter = 0
 	
 	player = Alfonso()
 	level2A = World2A()
 	level2B = World2B()
-	#scoreboard = Scoreboard()
 	grassTop = []
 	grassTopBig = []
 	qBox = []
@@ -809,7 +810,7 @@ def level_2(scoreboard):
 	for grastop in range(13):
 		# XY POS        0     1     2     3     4     5     6     7     8     9     10    11    12
 		grassTopx = [ 1129, 1675, 1999, 2251, 3180, 3821, 3788, 4172, 4431, 6221, 7147, 7372, 7759]
-		grassTopy = [  505,   59,  505,  257,  569,   59,  569,  569,  318,  441,  569,  318,  318]
+		grassTopy = [  601,  155,  601,  353,  665,  155,  665,  665,  414,  537,  665,  414,  414]
 		grassTop.append(GrassTop(grassTopx[GTLpos], grassTopy[GTLpos]))
 		GTLpos += 1
 		
@@ -817,15 +818,15 @@ def level_2(scoreboard):
 	for grastopbig in range(4):
 		# XY POS           0     1     2     3      
 		grassTopBigx = [ 1535, 2528, 4801, 6622]
-		grassTopBigy = [  320,    0,  127,  191]
+		grassTopBigy = [  416,   96,  223,  287]
 		grassTopBig.append(GrassTopBig(grassTopBigx[GTBLpos], grassTopBigy[GTBLpos]))
 		GTBLpos += 1
 
 	for box in range(1):
-		qBox.append(Qbox(5752, 440))
+		qBox.append(Qbox(5752, 536))
 		
 	for mush in range(1):
-		mushroom.append(Mushroom(5769, 390))
+		mushroom.append(Mushroom(5769, 486))
 	
 	backgroundSprites = pygame.sprite.OrderedUpdates(level2B, level2A)
 	grassSprites = pygame.sprite.OrderedUpdates(grassTop, grassTopBig)
@@ -839,6 +840,8 @@ def level_2(scoreboard):
 	level2B.rect.left = (level2A.rect.right)
 		
 	collideFlag = False
+	Level_Finish_2 = False
+	timer = True
 	
 	clock = pygame.time.Clock()
 	keepGoing = True
@@ -904,12 +907,7 @@ def level_2(scoreboard):
 		qboxCollide = pygame.sprite.spritecollide(player, qboxSprites, False, pygame.sprite.collide_mask)
 		mushroomCollide = pygame.sprite.spritecollide(player, mushroomSprites, True, pygame.sprite.collide_mask)
 		
-		if 	flagCollide:
-			player.floor = flagFloor
-			collideFlag = True
-			Level_Finish_1 = True
-			flagcounter = flagcounter + 1
-			
+		
 		if groundCollide:	
 			for theGround in groundCollide:
 				if collide_mask(player, theGround):
@@ -930,10 +928,35 @@ def level_2(scoreboard):
 			for theMush in mushroomCollide:
 				if collide_mask(player, theMush):
 					scoreboard.lives += 1
+		
+		if 	flagCollide:
+			player.floor = flagFloor
+			collideFlag = True
+			Level_Finish_2 = True
+			flagcounter = flagcounter + 1
+
+		if Level_Finish_2 == True:
+			if flagcounter == 1:
+				flagFloor = flagFloor + 1
+				flagcounter = 0
+				timer = False
+				if scoreboard.time != 0:
+					scoreboard.time -= 1
+				if player.rect.bottom >= 577:
+					flagFloor = 513
+					if scoreboard.time == 0:
+						print ("Switching")
+						currentScreen = level_3(scoreboard)
+					
+		if timer == False:
+			timeMoney = scoreboard.time
+			timeMoney *= 10
+			scoreboard.score += timeMoney
+		
 				
-				
-		counter = counter + 1
-		if counter == 30:
+		if timer == True:
+			counter = counter + 1
+		if timer == True and counter == 30:
 			time -= 1
 			counter = 0
 			scoreboard.time = time
@@ -964,7 +987,7 @@ def level_2(scoreboard):
 	pygame.mouse.set_visible(True)
 	
 
-currentScreen = splashScreen()
+currentScreen = level_1()
 	
 def main():
 	currentScreen	
