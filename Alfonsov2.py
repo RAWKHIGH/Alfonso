@@ -2,7 +2,7 @@
 # Purpose: Final Project. Create game with 3 levels (Easy, Medium, Hard) and a Boss level
 # GitHub: https://github.com/RAWKHIGH/Alfonso.git
 
-import pygame, random
+import pygame, random, sys
 from pygame import *
 from pygame.sprite import *
 
@@ -208,6 +208,48 @@ class World2B(pygame.sprite.Sprite):
 		self.rect.bottom = screen.get_height()
 		self.rect.left = 6658
 		
+class World3A(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("world3(1).png")
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+#	def update(self):
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.bottom = screen.get_height()
+		self.rect.left = 0
+
+class World3B(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("world3(2).png")
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.reset()
+
+#	def update(self):
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.bottom = screen.get_height()
+		self.rect.left = 5200
+		
 class Scoreboard(pygame.sprite.Sprite):
 	def __init__(self):
 		pygame.sprite.Sprite.__init__(self)
@@ -343,11 +385,73 @@ class Goomba(pygame.sprite.Sprite):
 				self.frame = 0
 				self.image = self.walkImage[self.frame]
 
-		
+class Cloud(pygame.sprite.Sprite):
+	def __init__(self, centerx, centery):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("cloud.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.calcMove()
+		self.centerx = centerx
+		self.centery = centery
+		self.mask = pygame.mask.from_surface(self.image)
+		self.walkImage = []
+		self.frame = 0
+		self.delay = 2
+		self.pause = self.delay
+		self.reset()
+	
+	def calcMove(self):
+		self.speed = random.randint(1,5)
+		self.dir = random.randint(0,1)
+		if self.dir	== 0:
+			self.dir = -1
+		self.speed *= self.dir
+	
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.bottom = screen.get_height() - 95
+		self.rect.centerx = self.centerx
+		self.rect.centery = self.centery
+	
+	def update(self):
+		self.rect.centerx += self.speed
+		self.pause -= 1
+	
 class Block(pygame.sprite.Sprite):
 	def __init__(self, x, y):
 		pygame.sprite.Sprite.__init__(self)
 		self.image = pygame.image.load("block.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.x = x
+		self.y = y
+		self.dx = 10
+		self.mask = pygame.mask.from_surface(self.image)
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.x = self.x
+		self.rect.y = self.y
+		
+class BlockT(pygame.sprite.Sprite):
+	def __init__(self, x, y):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("blockT.png")
 		self.image.set_colorkey(white)
 		self.image = self.image.convert()
 		self.rect = self.image.get_rect()
@@ -461,6 +565,48 @@ class GroundW2B(pygame.sprite.Sprite):
 	def __init__(self):
 		pygame.sprite.Sprite.__init__(self)
 		self.image = pygame.image.load("groundW2B.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.mask = pygame.mask.from_surface(self.image)
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.x = 8221
+		self.rect.y = screen.get_height() - 96
+		
+class GroundW3A(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("groundW3A.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.dx = 10
+		self.mask = pygame.mask.from_surface(self.image)
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.x = 0
+		self.rect.y = screen.get_height() - 94
+		
+class GroundW3B(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("groundW3B.png")
 		self.image.set_colorkey(white)
 		self.image = self.image.convert()
 		self.rect = self.image.get_rect()
@@ -636,7 +782,7 @@ def level_1():
 		pygame.mouse.set_visible(False)
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
-				keepGoing = False
+				sys.exit()
 			if event.type == pygame.KEYDOWN:
 				if event.key == pygame.K_UP:
 					if collideFlag == False:
@@ -711,8 +857,8 @@ def level_1():
 				timer = False
 				if scoreboard.time != 0:
 					scoreboard.time -= 1
-				if player.rect.bottom >= 577:
-					flagFloor = 513
+				if player.rect.bottom >= 673:
+					flagFloor = 609
 					if scoreboard.time == 0:
 						print ("Switching")
 						currentScreen = level_2(scoreboard)
@@ -799,12 +945,18 @@ def level_2(scoreboard):
 	grassTopBig = []
 	qBox = []
 	mushroom = []
+	clouds = []
 	flag = Flag()
 	groundW2A = GroundW2A()
 	groundW2B = GroundW2B()
 	
 	flagFloor = player.rect.y	
 	flag.rect.x = 9664
+	
+	for cloud in range(20):
+		cloudx = random.randint((level2A.rect.left + 1024), (level2B.rect.right - 1278))
+		cloudy = random.randint(0, screen.get_height())
+		clouds.append(Cloud(cloudx, cloudy))	
 	
 	GTLpos = 0
 	for grastop in range(13):
@@ -836,6 +988,7 @@ def level_2(scoreboard):
 	scoreSprite = pygame.sprite.Group(scoreboard)
 	flagSprites = pygame.sprite.OrderedUpdates(flag)
 	groundSprites = pygame.sprite.OrderedUpdates(groundW2A, groundW2B)
+	CloudSprites = pygame.sprite.Group(clouds)
 
 	level2B.rect.left = (level2A.rect.right)
 		
@@ -855,7 +1008,7 @@ def level_2(scoreboard):
 		pygame.mouse.set_visible(False)
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
-				keepGoing = False
+				sys.exit()
 			if event.type == pygame.KEYDOWN:
 				if event.key == pygame.K_UP:
 					player.jump()
@@ -879,7 +1032,8 @@ def level_2(scoreboard):
 						qBox[index].moveLeft()
 					for index in range(1):
 						mushroom[index].moveLeft()
-
+					for index in range(20):
+						clouds[index].moveLeft()
 
 		if key[pygame.K_RIGHT]:
 			player.turn = 1
@@ -899,14 +1053,15 @@ def level_2(scoreboard):
 						qBox[index].moveRight()
 					for index in range(1):
 						mushroom[index].moveRight()
-						
-						
+					for index in range(20):
+						clouds[index].moveRight()
+										
 		flagCollide = pygame.sprite.spritecollide(player, flagSprites, False, pygame.sprite.collide_mask)
 		groundCollide = pygame.sprite.spritecollide(player, groundSprites, False, pygame.sprite.collide_mask)
 		grassCollide = pygame.sprite.spritecollide(player, grassSprites, False, pygame.sprite.collide_mask)
 		qboxCollide = pygame.sprite.spritecollide(player, qboxSprites, False, pygame.sprite.collide_mask)
 		mushroomCollide = pygame.sprite.spritecollide(player, mushroomSprites, True, pygame.sprite.collide_mask)
-		
+		cloudCollide = pygame.sprite.spritecollide(player, CloudSprites, True, pygame.sprite.collide_mask)
 		
 		if groundCollide:	
 			for theGround in groundCollide:
@@ -935,6 +1090,33 @@ def level_2(scoreboard):
 			Level_Finish_2 = True
 			flagcounter = flagcounter + 1
 
+		for cloud in clouds:
+			if cloud.rect.left >= (level2A.rect.left + 1025):
+				cloud.speed *= -1
+			if cloud.rect.left <= (level2B.rect.right - 1278):
+				cloud.speed *= -1
+					
+		if cloudCollide:	
+			for theCloud in cloudCollide:
+				if collide_mask(player, theCloud):
+					print ("dead")
+					scoreboard.score = 0
+					scoreboard.lives -= 1
+					for index in range(1):
+						qBox[index].reset()
+					for index in range(1):
+						mushroom[index].reset()
+					for index in range(13):
+						grassTop[index].reset()
+					for index in range(4):
+						grassTopBig[index].reset()	
+					player.reset()
+					level2A.reset()
+					level2B.reset()
+					flag.rect.x = 9664
+					groundW2A.reset()
+					groundW2B.reset()
+			
 		if Level_Finish_2 == True:
 			if flagcounter == 1:
 				flagFloor = flagFloor + 1
@@ -942,8 +1124,8 @@ def level_2(scoreboard):
 				timer = False
 				if scoreboard.time != 0:
 					scoreboard.time -= 1
-				if player.rect.bottom >= 577:
-					flagFloor = 513
+				if player.rect.bottom >= 673:
+					flagFloor = 609
 					if scoreboard.time == 0:
 						print ("Switching")
 						currentScreen = level_3(scoreboard)
@@ -971,9 +1153,184 @@ def level_2(scoreboard):
 		qboxSprites.update()
 		mushroomSprites.update()
 		groundSprites.update()
+		CloudSprites.update()
 
 		backgroundSprites.draw(screen)
 		grassSprites.draw(screen)
+		flagSprites.draw(screen)
+		qboxSprites.draw(screen)
+		mushroomSprites.draw(screen)
+		groundSprites.draw(screen)
+		scoreSprite.draw(screen)
+		playerSprites.draw(screen)
+		CloudSprites.draw(screen)
+
+
+		pygame.display.flip()
+		
+	pygame.mouse.set_visible(True)
+
+	
+def level_3(scoreboard):
+	screen = pygame.display.set_mode((1024, 768))
+	#, pygame.FULLSCREEN
+	pygame.display.set_caption("Super Mario Bros. Cousin Alfonso")
+
+	background = pygame.Surface(screen.get_size())
+	background.fill((0, 0, 0))
+	screen.blit(background, (0, 0))
+
+	counter = 0
+	time = 180
+	flagcounter = 0
+	
+	player = Alfonso()
+	level3A = World3A()
+	level3B = World3B()
+	qBox = []
+	mushroom = []
+	flag = Flag()
+	groundW3A = GroundW3A()
+	groundW3B = GroundW3B()
+	
+	flagFloor = player.rect.y	
+	flag.rect.x = 9664
+
+	for box in range(1):
+		qBox.append(Qbox(5752, 536))
+		
+	for mush in range(1):
+		mushroom.append(Mushroom(5769, 486))
+	
+	backgroundSprites = pygame.sprite.OrderedUpdates(level3B, level3A)
+	qboxSprites = pygame.sprite.OrderedUpdates(qBox)
+	mushroomSprites = pygame.sprite.OrderedUpdates(mushroom)
+	playerSprites = pygame.sprite.OrderedUpdates(player)
+	scoreSprite = pygame.sprite.Group(scoreboard)
+	flagSprites = pygame.sprite.OrderedUpdates(flag)
+	groundSprites = pygame.sprite.OrderedUpdates(groundW3A, groundW3B)
+
+	level3B.rect.left = (level3A.rect.right)
+		
+	collideFlag = False
+	Level_Finish_3 = False
+	timer = True
+	
+	clock = pygame.time.Clock()
+	keepGoing = True
+	while keepGoing:
+		clock.tick(30)
+		key = pygame.key.get_pressed()
+		jumping = False
+		collideLeft = False
+		collideRight = False
+		player.floor = 672
+		pygame.mouse.set_visible(False)
+		for event in pygame.event.get():
+			if event.type == pygame.QUIT:
+				sys.exit()
+			if event.type == pygame.KEYDOWN:
+				if event.key == pygame.K_UP:
+					player.jump()
+
+				
+		if key[pygame.K_LEFT]:
+			player.turn = 0
+			if collideFlag == False:
+				if not level3A.rect.left == 0:
+					player.moving = True
+					level3A.moveLeft()
+					level3B.moveLeft()
+					flag.moveLeft()
+					groundW3A.moveLeft()
+					groundW3B.moveLeft()
+					for index in range(1):
+						qBox[index].moveLeft()
+					for index in range(1):
+						mushroom[index].moveLeft()
+
+
+		if key[pygame.K_RIGHT]:
+			player.turn = 1
+			if collideFlag == False:
+				if level3B.rect.right > 1024:
+					player.moving = True
+					level3A.moveRight()
+					level3B.moveRight()
+					flag.moveRight()
+					groundW3A.moveRight()
+					groundW3B.moveRight()
+					for index in range(1):
+						qBox[index].moveRight()
+					for index in range(1):
+						mushroom[index].moveRight()
+						
+						
+		flagCollide = pygame.sprite.spritecollide(player, flagSprites, False, pygame.sprite.collide_mask)
+		groundCollide = pygame.sprite.spritecollide(player, groundSprites, False, pygame.sprite.collide_mask)
+		qboxCollide = pygame.sprite.spritecollide(player, qboxSprites, False, pygame.sprite.collide_mask)
+		mushroomCollide = pygame.sprite.spritecollide(player, mushroomSprites, True, pygame.sprite.collide_mask)
+		
+		
+		if groundCollide:	
+			for theGround in groundCollide:
+				if collide_mask(player, theGround):
+					player.floor = (theGround.rect.top - 64)
+		
+		if qboxCollide:	
+			for theqBox in qboxCollide:
+				if collide_mask(player, theqBox):
+					player.floor = (theqBox.rect.top - 64)
+					
+		if mushroomCollide:
+			print("Colide Mushroom")
+			for theMush in mushroomCollide:
+				if collide_mask(player, theMush):
+					scoreboard.lives += 1
+		
+		if 	flagCollide:
+			player.floor = flagFloor
+			collideFlag = True
+			Level_Finish_3 = True
+			flagcounter = flagcounter + 1
+
+		if Level_Finish_3 == True:
+			if flagcounter == 1:
+				flagFloor = flagFloor + 1
+				flagcounter = 0
+				timer = False
+				if scoreboard.time != 0:
+					scoreboard.time -= 1
+				if player.rect.bottom >= 673:
+					flagFloor = 609
+					if scoreboard.time == 0:
+						print ("Switching")
+						currentScreen = Boss_lvl(scoreboard)
+					
+		if timer == False:
+			timeMoney = scoreboard.time
+			timeMoney *= 10
+			scoreboard.score += timeMoney
+		
+				
+		if timer == True:
+			counter = counter + 1
+		if timer == True and counter == 30:
+			time -= 1
+			counter = 0
+			scoreboard.time = time
+		
+		player.calc_grav()
+			
+		playerSprites.update()
+		scoreSprite.update()
+		backgroundSprites.update()
+		flagSprites.update()
+		qboxSprites.update()
+		mushroomSprites.update()
+		groundSprites.update()
+
+		backgroundSprites.draw(screen)
 		flagSprites.draw(screen)
 		qboxSprites.draw(screen)
 		mushroomSprites.draw(screen)
@@ -984,9 +1341,8 @@ def level_2(scoreboard):
 
 		pygame.display.flip()
 		
-	pygame.mouse.set_visible(True)
+	pygame.mouse.set_visible(True)	
 	
-
 currentScreen = level_1()
 	
 def main():
