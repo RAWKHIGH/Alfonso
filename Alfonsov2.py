@@ -424,7 +424,7 @@ class Cloud(pygame.sprite.Sprite):
 	def update(self):
 		self.rect.centerx += self.speed
 		self.pause -= 1
-	
+
 class Block(pygame.sprite.Sprite):
 	def __init__(self, x, y):
 		pygame.sprite.Sprite.__init__(self)
@@ -470,7 +470,7 @@ class BlockT(pygame.sprite.Sprite):
 	def reset(self):
 		self.rect.x = self.x
 		self.rect.y = self.y
-		
+
 class GrassTop(pygame.sprite.Sprite):
 	def __init__(self, x, y):
 		pygame.sprite.Sprite.__init__(self)
@@ -516,7 +516,7 @@ class GrassTopBig(pygame.sprite.Sprite):
 	def reset(self):
 		self.rect.x = self.x
 		self.rect.y = self.y
-		
+
 class Qbox(pygame.sprite.Sprite):
 	def __init__(self, x, y):
 		pygame.sprite.Sprite.__init__(self)
@@ -539,7 +539,7 @@ class Qbox(pygame.sprite.Sprite):
 	def reset(self):
 		self.rect.x = self.x
 		self.rect.y = self.y	
-		
+
 class GroundW2A(pygame.sprite.Sprite):
 	def __init__(self):
 		pygame.sprite.Sprite.__init__(self)
@@ -560,7 +560,7 @@ class GroundW2A(pygame.sprite.Sprite):
 	def reset(self):
 		self.rect.x = 0
 		self.rect.y = screen.get_height() - 94
-		
+
 class GroundW2B(pygame.sprite.Sprite):
 	def __init__(self):
 		pygame.sprite.Sprite.__init__(self)
@@ -581,7 +581,7 @@ class GroundW2B(pygame.sprite.Sprite):
 	def reset(self):
 		self.rect.x = 8221
 		self.rect.y = screen.get_height() - 96
-		
+
 class GroundW3A(pygame.sprite.Sprite):
 	def __init__(self):
 		pygame.sprite.Sprite.__init__(self)
@@ -602,7 +602,7 @@ class GroundW3A(pygame.sprite.Sprite):
 	def reset(self):
 		self.rect.x = 0
 		self.rect.y = screen.get_height() - 94
-		
+
 class GroundW3B(pygame.sprite.Sprite):
 	def __init__(self):
 		pygame.sprite.Sprite.__init__(self)
@@ -623,7 +623,7 @@ class GroundW3B(pygame.sprite.Sprite):
 	def reset(self):
 		self.rect.x = 8221
 		self.rect.y = screen.get_height() - 96
-		
+	
 def splashScreen():
 	screen = pygame.display.set_mode((1024, 768), pygame.FULLSCREEN)
 	pygame.display.set_caption("Super Mario Bros. Cousin Alfonso")
@@ -706,7 +706,8 @@ def helpScreen_lv1():
 	return donePlaying
 	
 def level_1():
-	screen = pygame.display.set_mode((1024, 768), pygame.FULLSCREEN)
+	screen = pygame.display.set_mode((1024, 768))
+	#, pygame.FULLSCREEN
 	pygame.display.set_caption("Super Mario Bros. Cousin Alfonso")
 
 	background = pygame.Surface(screen.get_size())
@@ -1004,7 +1005,7 @@ def level_2(scoreboard):
 		jumping = False
 		collideLeft = False
 		collideRight = False
-		player.floor = 672
+		player.floor = (screen.get_height() + 80)
 		pygame.mouse.set_visible(False)
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
@@ -1091,6 +1092,8 @@ def level_2(scoreboard):
 			flagcounter = flagcounter + 1
 
 		for cloud in clouds:
+			if cloud.rect.centerx > (level2B.rect.right - 1278):
+				cloud.reset()
 			if cloud.rect.left >= (level2A.rect.left + 1025):
 				cloud.speed *= -1
 			if cloud.rect.left <= (level2B.rect.right - 1278):
@@ -1116,6 +1119,25 @@ def level_2(scoreboard):
 					flag.rect.x = 9664
 					groundW2A.reset()
 					groundW2B.reset()
+					
+		if player.rect.top >= screen.get_height() + 1:
+			print ("dead")
+			scoreboard.score = 0
+			scoreboard.lives -= 1
+			for index in range(1):
+				qBox[index].reset()
+			for index in range(1):
+				mushroom[index].reset()
+			for index in range(13):
+				grassTop[index].reset()
+			for index in range(4):
+				grassTopBig[index].reset()	
+			player.reset()
+			level2A.reset()
+			level2B.reset()
+			flag.rect.x = 9664
+			groundW2A.reset()
+			groundW2B.reset()
 			
 		if Level_Finish_2 == True:
 			if flagcounter == 1:
@@ -1161,11 +1183,10 @@ def level_2(scoreboard):
 		qboxSprites.draw(screen)
 		mushroomSprites.draw(screen)
 		groundSprites.draw(screen)
+		CloudSprites.draw(screen)
 		scoreSprite.draw(screen)
 		playerSprites.draw(screen)
-		CloudSprites.draw(screen)
-
-
+		
 		pygame.display.flip()
 		
 	pygame.mouse.set_visible(True)
@@ -1224,7 +1245,7 @@ def level_3(scoreboard):
 		jumping = False
 		collideLeft = False
 		collideRight = False
-		player.floor = 672
+		player.floor = (screen.get_height() + 80)
 		pygame.mouse.set_visible(False)
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
