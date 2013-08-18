@@ -15,7 +15,8 @@ red      = (255,  0,  0)
 
 screen = pygame.display.set_mode((1024, 672))
 
-globalScore = 0
+SCORE = 0
+globalLives = 5
 
 class Alfonso(pygame.sprite.Sprite):
 
@@ -24,8 +25,6 @@ class Alfonso(pygame.sprite.Sprite):
 
 	frame_since_collision = 0
 	frame_since_jump = 0
-	
-	
 	
 	def __init__(self):
 		pygame.sprite.Sprite.__init__(self)
@@ -249,6 +248,28 @@ class Star(pygame.sprite.Sprite):
 		self.rect.x = self.x
 		self.rect.y = self.y
 		
+class Mushroom(pygame.sprite.Sprite):
+	def __init__(self, x, y):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("mushroom.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.x = x
+		self.y = y
+		self.dx = 10
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.x = self.x
+		self.rect.y = self.y
+		
 class Flag(pygame.sprite.Sprite):
 	def __init__(self):
 		pygame.sprite.Sprite.__init__(self)
@@ -369,6 +390,29 @@ class GrassTop(pygame.sprite.Sprite):
 		self.rect.x = self.x
 		self.rect.y = self.y
 		
+class GrassTopBig(pygame.sprite.Sprite):
+	def __init__(self, x, y):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("grassTopBig.png")
+		self.image.set_colorkey(white)
+		self.image = self.image.convert()
+		self.rect = self.image.get_rect()
+		self.x = x
+		self.y = y
+		self.dx = 10
+		self.mask = pygame.mask.from_surface(self.image)
+		self.reset()
+
+	def moveRight(self):
+		self.rect.left -= self.dx
+
+	def moveLeft(self):
+		self.rect.left += self.dx
+
+	def reset(self):
+		self.rect.x = self.x
+		self.rect.y = self.y
+		
 class Qbox(pygame.sprite.Sprite):
 	def __init__(self, x, y):
 		pygame.sprite.Sprite.__init__(self)
@@ -416,7 +460,7 @@ class GroundW2A(pygame.sprite.Sprite):
 class GroundW2B(pygame.sprite.Sprite):
 	def __init__(self):
 		pygame.sprite.Sprite.__init__(self)
-		self.image = pygame.image.load("groundW2A.png")
+		self.image = pygame.image.load("groundW2B.png")
 		self.image.set_colorkey(white)
 		self.image = self.image.convert()
 		self.rect = self.image.get_rect()
@@ -435,7 +479,7 @@ class GroundW2B(pygame.sprite.Sprite):
 		self.rect.y = screen.get_height() - 96
 		
 def splashScreen():
-	screen = pygame.display.set_mode((1024, 672))
+	screen = pygame.display.set_mode((1024, 768), pygame.FULLSCREEN)
 	pygame.display.set_caption("Super Mario Bros. Cousin Alfonso")
 	
 	splash_image = pygame.image.load("SMBCA Splash Screen.png").convert()
@@ -465,7 +509,7 @@ def splashScreen():
 	return donePlaying
 
 def instructionScreen():
-	screen = pygame.display.set_mode((1024, 672))
+	screen = pygame.display.set_mode((1024, 768), pygame.FULLSCREEN)
 	pygame.display.set_caption("Super Mario Bros. Cousin Alfonso")
 	
 	instruction_image = pygame.image.load("instructions.png").convert()
@@ -491,7 +535,7 @@ def instructionScreen():
 	return donePlaying
 
 def helpScreen_lv1():
-	screen = pygame.display.set_mode((1024, 672))
+	screen = pygame.display.set_mode((1024, 768), pygame.FULLSCREEN)
 	pygame.display.set_caption("Super Mario Bros. Cousin Alfonso")
 	helpScreen_image = pygame.image.load("helpScreen.png").convert()
 	screen.blit(helpScreen_image, [0 , 0])
@@ -516,7 +560,7 @@ def helpScreen_lv1():
 	return donePlaying
 	
 def level_1():
-	screen = pygame.display.set_mode((1024, 672))
+	screen = pygame.display.set_mode((1024, 768), pygame.FULLSCREEN)
 	pygame.display.set_caption("Super Mario Bros. Cousin Alfonso")
 
 	background = pygame.Surface(screen.get_size())
@@ -650,8 +694,7 @@ def level_1():
 					player.floor = (theQbox.rect.top - 64)
 		else:
 			player.floor = 513
-				
-			
+		
 		if starCollide:
 			scoreboard.score += 100
 			
@@ -672,13 +715,12 @@ def level_1():
 					flagFloor = 513
 					if scoreboard.time == 0:
 						print ("Switching")
-						globalScore = scoreboard.score
-						currentScreen = level_2()
+						currentScreen = level_2(scoreboard)
 					
 		if timer == False:
 			timeMoney = scoreboard.time
 			timeMoney *= 10
-			scoreboard.score = scoreboard.score + timeMoney
+			scoreboard.score += timeMoney
 		
 		for goomba in goombas:
 			if goomba.rect.left >= level1A.rect.left:
@@ -737,8 +779,8 @@ def level_1():
 
 	pygame.mouse.set_visible(True)
 
-def level_2():
-	screen = pygame.display.set_mode((1024, 672))
+def level_2(scoreboard):
+	screen = pygame.display.set_mode((1024, 768), pygame.FULLSCREEN)
 	pygame.display.set_caption("Super Mario Bros. Cousin Alfonso")
 
 	background = pygame.Surface(screen.get_size())
@@ -751,13 +793,16 @@ def level_2():
 	player = Alfonso()
 	level2A = World2A()
 	level2B = World2B()
-	scoreboard = Scoreboard()
+	#scoreboard = Scoreboard()
 	grassTop = []
+	grassTopBig = []
+	qBox = []
+	mushroom = []
 	flag = Flag()
 	groundW2A = GroundW2A()
+	groundW2B = GroundW2B()
 	
-	flagFloor = player.rect.y
-	scoreboard.score = globalScore	
+	flagFloor = player.rect.y	
 	flag.rect.x = 9664
 	
 	GTLpos = 0
@@ -767,13 +812,29 @@ def level_2():
 		grassTopy = [  505,   59,  505,  257,  569,   59,  569,  569,  318,  441,  569,  318,  318]
 		grassTop.append(GrassTop(grassTopx[GTLpos], grassTopy[GTLpos]))
 		GTLpos += 1
+		
+	GTBLpos = 0
+	for grastopbig in range(4):
+		# XY POS           0     1     2     3      
+		grassTopBigx = [ 1535, 2528, 4801, 6622]
+		grassTopBigy = [  320,    0,  127,  191]
+		grassTopBig.append(GrassTopBig(grassTopBigx[GTBLpos], grassTopBigy[GTBLpos]))
+		GTBLpos += 1
+
+	for box in range(1):
+		qBox.append(Qbox(5752, 440))
+		
+	for mush in range(1):
+		mushroom.append(Mushroom(5769, 390))
 	
 	backgroundSprites = pygame.sprite.OrderedUpdates(level2B, level2A)
-	grassSprites = pygame.sprite.OrderedUpdates(grassTop)
+	grassSprites = pygame.sprite.OrderedUpdates(grassTop, grassTopBig)
+	qboxSprites = pygame.sprite.OrderedUpdates(qBox)
+	mushroomSprites = pygame.sprite.OrderedUpdates(mushroom)
 	playerSprites = pygame.sprite.OrderedUpdates(player)
 	scoreSprite = pygame.sprite.Group(scoreboard)
 	flagSprites = pygame.sprite.OrderedUpdates(flag)
-	groundSprites = pygame.sprite.OrderedUpdates(groundW2A)
+	groundSprites = pygame.sprite.OrderedUpdates(groundW2A, groundW2B)
 
 	level2B.rect.left = (level2A.rect.right)
 		
@@ -788,8 +849,6 @@ def level_2():
 		collideLeft = False
 		collideRight = False
 		player.floor = 672
-		print (flag.rect.x)
-		print (flag.rect.y)
 		pygame.mouse.set_visible(False)
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
@@ -808,8 +867,15 @@ def level_2():
 					level2B.moveLeft()
 					flag.moveLeft()
 					groundW2A.moveLeft()
+					groundW2B.moveLeft()
 					for index in range(13):
 						grassTop[index].moveLeft()
+					for index in range(4):
+						grassTopBig[index].moveLeft()
+					for index in range(1):
+						qBox[index].moveLeft()
+					for index in range(1):
+						mushroom[index].moveLeft()
 
 
 		if key[pygame.K_RIGHT]:
@@ -821,12 +887,22 @@ def level_2():
 					level2B.moveRight()
 					flag.moveRight()
 					groundW2A.moveRight()
+					groundW2B.moveRight()
 					for index in range(13):
 						grassTop[index].moveRight()
+					for index in range(4):
+						grassTopBig[index].moveRight()
+					for index in range(1):
+						qBox[index].moveRight()
+					for index in range(1):
+						mushroom[index].moveRight()
+						
 						
 		flagCollide = pygame.sprite.spritecollide(player, flagSprites, False, pygame.sprite.collide_mask)
 		groundCollide = pygame.sprite.spritecollide(player, groundSprites, False, pygame.sprite.collide_mask)
 		grassCollide = pygame.sprite.spritecollide(player, grassSprites, False, pygame.sprite.collide_mask)
+		qboxCollide = pygame.sprite.spritecollide(player, qboxSprites, False, pygame.sprite.collide_mask)
+		mushroomCollide = pygame.sprite.spritecollide(player, mushroomSprites, True, pygame.sprite.collide_mask)
 		
 		if 	flagCollide:
 			player.floor = flagFloor
@@ -843,8 +919,19 @@ def level_2():
 			for theGrass in grassCollide:
 				if collide_mask(player, theGrass):
 					player.floor = (theGrass.rect.top - 64)
-			
-			
+		
+		if qboxCollide:	
+			for theqBox in qboxCollide:
+				if collide_mask(player, theqBox):
+					player.floor = (theqBox.rect.top - 64)
+					
+		if mushroomCollide:
+			print("Colide Mushroom")
+			for theMush in mushroomCollide:
+				if collide_mask(player, theMush):
+					scoreboard.lives += 1
+				
+				
 		counter = counter + 1
 		if counter == 30:
 			time -= 1
@@ -858,11 +945,15 @@ def level_2():
 		scoreSprite.update()
 		backgroundSprites.update()
 		flagSprites.update()
+		qboxSprites.update()
+		mushroomSprites.update()
 		groundSprites.update()
 
 		backgroundSprites.draw(screen)
 		grassSprites.draw(screen)
 		flagSprites.draw(screen)
+		qboxSprites.draw(screen)
+		mushroomSprites.draw(screen)
 		groundSprites.draw(screen)
 		scoreSprite.draw(screen)
 		playerSprites.draw(screen)
