@@ -621,7 +621,7 @@ class GroundW3B(pygame.sprite.Sprite):
 		self.rect.left += self.dx
 
 	def reset(self):
-		self.rect.x = 8221
+		self.rect.x = 9023
 		self.rect.y = screen.get_height() - 96
 	
 def splashScreen():
@@ -730,6 +730,7 @@ def level_1():
 	scoreboard = Scoreboard() 
 	flagFloor = player.rect.y
 	flag.rect.x = 12642
+	oldScore = scoreboard.score
 
 	for goomba in range(100):
 		goombax = random.randint(level1A.rect.left, (level1B.rect.right - 1278))
@@ -862,6 +863,9 @@ def level_1():
 					flagFloor = 609
 					if scoreboard.time == 0:
 						print ("Switching")
+						if scoreboard.score > oldScore:
+							if (scoreboard.score / 10000) > scoreboard.lives:
+								scoreboard.lives = scoreboard.score / 10000
 						currentScreen = level_2(scoreboard)
 					
 		if timer == False:
@@ -953,6 +957,7 @@ def level_2(scoreboard):
 	
 	flagFloor = player.rect.y	
 	flag.rect.x = 9664
+	oldScore = scoreboard.score
 	
 	for cloud in range(20):
 		cloudx = random.randint((level2A.rect.left + 1024), (level2B.rect.right - 1278))
@@ -1080,7 +1085,6 @@ def level_2(scoreboard):
 					player.floor = (theqBox.rect.top - 64)
 					
 		if mushroomCollide:
-			print("Colide Mushroom")
 			for theMush in mushroomCollide:
 				if collide_mask(player, theMush):
 					scoreboard.lives += 1
@@ -1092,13 +1096,15 @@ def level_2(scoreboard):
 			flagcounter = flagcounter + 1
 
 		for cloud in clouds:
+			if cloud.rect.centerx < (level2A.rect.left + 1024):
+				cloud.reset()
 			if cloud.rect.centerx > (level2B.rect.right - 1278):
 				cloud.reset()
 			if cloud.rect.left >= (level2A.rect.left + 1025):
 				cloud.speed *= -1
 			if cloud.rect.left <= (level2B.rect.right - 1278):
 				cloud.speed *= -1
-					
+
 		if cloudCollide:	
 			for theCloud in cloudCollide:
 				if collide_mask(player, theCloud):
@@ -1150,6 +1156,9 @@ def level_2(scoreboard):
 					flagFloor = 609
 					if scoreboard.time == 0:
 						print ("Switching")
+						if scoreboard.score > oldScore:
+							if (scoreboard.score / 10000) > scoreboard.lives:
+								scoreboard.lives = scoreboard.score / 10000
 						currentScreen = level_3(scoreboard)
 					
 		if timer == False:
@@ -1191,7 +1200,6 @@ def level_2(scoreboard):
 		
 	pygame.mouse.set_visible(True)
 
-	
 def level_3(scoreboard):
 	screen = pygame.display.set_mode((1024, 768))
 	#, pygame.FULLSCREEN
@@ -1210,13 +1218,23 @@ def level_3(scoreboard):
 	level3B = World3B()
 	qBox = []
 	mushroom = []
+	blocks = []
 	flag = Flag()
 	groundW3A = GroundW3A()
 	groundW3B = GroundW3B()
 	
 	flagFloor = player.rect.y	
-	flag.rect.x = 9664
+	flag.rect.x = 9366
+	oldScore = scoreboard.score
 
+	BLpos = 0
+	for block in range(50):
+		# XY POS    0     1     2     3     4     5     6     7     8     9    10    11    12    13    14    15    16    17    18    19    20    21    22    23    24    25    26    27    28    29    30    31    32    33    34    35    36    37    38    39    40    41    42    43    44    45    46    47    48    49
+		blockx = [ 958, 1023, 1088, 1218, 1283, 1539, 1604, 1669, 1861, 1926, 1991, 2056, 2312, 2377, 2442, 2507, 2845, 2910, 2975, 3040, 3454, 3519, 3584, 4054, 4119, 4184, 4645, 4710, 4775, 5006, 5071, 5136, 5342, 5407, 5472, 6109, 6174, 6239, 6697, 6762, 6827, 7312, 7377, 7442, 8100, 8165, 8230, 8829, 8894, 8959]
+		blocky = [ 672,  672,  672,  672,  672,  672,  672,  672,  425,  425,  425,  425,  425,  425,  425,  425,  203,  203,  203,  203,  425,  425,  425,  672,  672,  672,  672,  672,  672,  425,  425,  425,  672,  672,  672,  672,  672,  672,  425,  425,  425,  203,  203,  203,  672,  672,  672,  672,  672,  672]
+		blocks.append(BlockT(blockx[BLpos], blocky[BLpos]))
+		BLpos += 1
+	
 	for box in range(1):
 		qBox.append(Qbox(5752, 536))
 		
@@ -1229,6 +1247,7 @@ def level_3(scoreboard):
 	playerSprites = pygame.sprite.OrderedUpdates(player)
 	scoreSprite = pygame.sprite.Group(scoreboard)
 	flagSprites = pygame.sprite.OrderedUpdates(flag)
+	blocksSprites = pygame.sprite.OrderedUpdates(blocks)
 	groundSprites = pygame.sprite.OrderedUpdates(groundW3A, groundW3B)
 
 	level3B.rect.left = (level3A.rect.right)
@@ -1269,7 +1288,8 @@ def level_3(scoreboard):
 						qBox[index].moveLeft()
 					for index in range(1):
 						mushroom[index].moveLeft()
-
+					for index in range(50):
+						blocks[index].moveLeft()
 
 		if key[pygame.K_RIGHT]:
 			player.turn = 1
@@ -1285,13 +1305,14 @@ def level_3(scoreboard):
 						qBox[index].moveRight()
 					for index in range(1):
 						mushroom[index].moveRight()
-						
-						
-		flagCollide = pygame.sprite.spritecollide(player, flagSprites, False, pygame.sprite.collide_mask)
+					for index in range(50):
+						blocks[index].moveRight()
+		
+		flagCollide = pygame.sprite.spritecollide(player, flagSprites, False, pygame.sprite.collide_mask)		
 		groundCollide = pygame.sprite.spritecollide(player, groundSprites, False, pygame.sprite.collide_mask)
 		qboxCollide = pygame.sprite.spritecollide(player, qboxSprites, False, pygame.sprite.collide_mask)
 		mushroomCollide = pygame.sprite.spritecollide(player, mushroomSprites, True, pygame.sprite.collide_mask)
-		
+		blocksCollide = pygame.sprite.spritecollide(player, blocksSprites, False, pygame.sprite.collide_mask)
 		
 		if groundCollide:	
 			for theGround in groundCollide:
@@ -1303,17 +1324,39 @@ def level_3(scoreboard):
 				if collide_mask(player, theqBox):
 					player.floor = (theqBox.rect.top - 64)
 					
+		if blocksCollide:	
+			for theBlock in blocksCollide:
+				if collide_mask(player, theBlock):
+					player.floor = (theBlock.rect.top - 64)
+					theBlock.image = pygame.image.load("block.png")
+					
 		if mushroomCollide:
-			print("Colide Mushroom")
 			for theMush in mushroomCollide:
 				if collide_mask(player, theMush):
 					scoreboard.lives += 1
-		
+					
 		if 	flagCollide:
 			player.floor = flagFloor
 			collideFlag = True
-			Level_Finish_3 = True
+			Level_Finish_2 = True
 			flagcounter = flagcounter + 1
+		
+		if player.rect.top >= screen.get_height() + 1:
+			print ("dead")
+			scoreboard.score = 0
+			scoreboard.lives -= 1
+			for index in range(1):
+				qBox[index].reset()
+			for index in range(1):
+				mushroom[index].reset()
+			for index in range(50):
+				blocks[index].reset()	
+			player.reset()
+			level3A.reset()
+			level3B.reset()
+			flag.rect.x = 9366
+			groundW3A.reset()
+			groundW3B.reset()
 
 		if Level_Finish_3 == True:
 			if flagcounter == 1:
@@ -1326,6 +1369,9 @@ def level_3(scoreboard):
 					flagFloor = 609
 					if scoreboard.time == 0:
 						print ("Switching")
+						if scoreboard.score > oldScore:
+							if (scoreboard.score / 10000) > scoreboard.lives:
+								scoreboard.lives = scoreboard.score / 10000
 						currentScreen = Boss_lvl(scoreboard)
 					
 		if timer == False:
@@ -1346,16 +1392,18 @@ def level_3(scoreboard):
 		playerSprites.update()
 		scoreSprite.update()
 		backgroundSprites.update()
-		flagSprites.update()
 		qboxSprites.update()
+		flagSprites.update()
+		blocksSprites.update()
 		mushroomSprites.update()
 		groundSprites.update()
 
 		backgroundSprites.draw(screen)
-		flagSprites.draw(screen)
 		qboxSprites.draw(screen)
+		blocksSprites.draw(screen)
 		mushroomSprites.draw(screen)
 		groundSprites.draw(screen)
+		flagSprites.draw(screen)
 		scoreSprite.draw(screen)
 		playerSprites.draw(screen)
 
